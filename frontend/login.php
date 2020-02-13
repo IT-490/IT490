@@ -17,7 +17,7 @@ if(empty($pass)){
 if($errFlag == 1){
 	
 }else{
-	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => $pass)));
+	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => sha1($pass))));
 	echo $response;
 }
 
