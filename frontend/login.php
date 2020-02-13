@@ -17,7 +17,8 @@ if(empty($pass)){
 if($errFlag == 1){
 	
 }else{
-	sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => $pass)))
+	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => $pass)));
+	echo $response;
 }
 
 
