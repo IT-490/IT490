@@ -1,11 +1,17 @@
 <?php
-	function sanatize($db, $data){
-		$data = trim($data);
-		$data = mysqli_real_escape_string($db, $data);
-		return $data;
+require_once('./path.inc');
+require_once('./get_host_info.inc');
+require_once('./rabbitMQLib.inc');
+
+	function sendRabbit($data){
+		$client = new rabbitMQClient("rabbitMQ.ini","testserver");
+		$response = $client->send_request($data);
+		return $response;	
 	}
-	
-	function sendRabbit($data, $key){
-			
+
+	function sanatize($data){
+		$data = trim($data);
+		$data = sendRabbit(array('type' => 'sanatize', 'data' => $data));
+		return $data
 	}
 ?>
