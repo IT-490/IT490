@@ -1,0 +1,49 @@
+<html>
+
+<head> <title>
+Register Page
+</title> </head>
+
+<body>
+<h1>
+<font size="30"> <center>Register Page</center> </font>
+</h1>
+
+<form name="Login">
+
+<center>
+Username <input type="text" name="userid"/>    <!-- username -->
+Password <input type="password" name="password"/> <!--Password -->
+Email <input type="email" name= "email"/> <!-- Email -->
+
+<br>
+<br>
+
+First Name <input type="text" name="firstname"> <!-- FirstName -->
+Last Name <input type="text" name="lastname">   <!-- LastName -->
+
+<br>
+<br>
+
+<input type="button" onclick="check(this.form)" value="Login"/>
+<input type="reset" value="Cancel"/>
+
+</center>
+</form>
+
+<script language="javascript">
+function check(form)/*check username & password*/
+{
+ /*check is the usernsme & password is correct or not*/
+ if(form.userid.value == "meet" && form.password.value == "shah")
+  {
+    window.open('register.html')/*open the same page in new tab*/
+  }
+ else
+ {
+   alert("Error Password or Username")
+  }
+}
+</script>
+</body>
+</html>
