@@ -4,6 +4,8 @@ include("functions.php");
 $name = sanatize($_REQUEST['name']);
 $pass = sanatize($_REQUEST['pass']);
 $errFlag = False;
+$nameErr = False;
+$passErr = False;
 
 if(empty($name)){
 	$errFlag = True;
@@ -17,12 +19,11 @@ if(empty($pass)){
 if($errFlag){
 	$obj->nameErr = $nameErr;
 	$obj->passErr = $passErr;
-	$encObj = json_encode($obj);
-	echo $encObj;
 }else{
 	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => sha1($pass))));
-	echo $response;
+	$obj->response = $response;
 }
 
-
+$encObj = json_encode($obj);
+echo $encObj;
 ?>
