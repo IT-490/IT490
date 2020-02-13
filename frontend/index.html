@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+	<body onload="checkSession()">
+		<button id="login">login</button>
+		<button id="register">register</button>
+		<span id="welcome"></span>
+	</body>
+	<script type="text/javascript">
+		document.getElementByID("login").onclick = function (){
+			location.href = "/login.html";
+		}
+		document.getElementByID("register").onclick = function (){
+			location.href = "/register.html";
+		}
+	</script>
+</html>
