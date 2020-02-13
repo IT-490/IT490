@@ -3,19 +3,22 @@ include("functions.php");
 
 $name = sanatize($_REQUEST['name']);
 $pass = sanatize($_REQUEST['pass']);
-$errFlag = 0;
+$errFlag = False;
 
 if(empty($name)){
-	$errFlag = 1;
-	$nameError = 1;
+	$errFlag = True;
+	$nameErr = True;
 }
 if(empty($pass)){
-	$errFlag = 1;
-	$passError = 1;
+	$errFlag = True;
+	$passErr = True;
 }
 
-if($errFlag == 1){
-	
+if($errFlag){
+	$obj->nameErr = $nameErr;
+	$obj->passErr = $passErr;
+	$encObj = json_encode($obj);
+	echo $encObj;
 }else{
 	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => sha1($pass))));
 	echo $response;
