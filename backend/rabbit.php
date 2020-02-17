@@ -1,6 +1,9 @@
 <?php
 //Include databse connection info 
 
+require_once('../path.inc');
+require_once('../get_host_info.inc');
+require_once('../rabbitMQLib.inc');
 function proccess($recieved){
 echo "received request".PHP_EOL;
 var_dump($request);	

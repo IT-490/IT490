@@ -29,10 +29,15 @@ if($errflag == true){
 	$obj->dataerror = true;
 }
 else{
-	$response = ;
-	if ($response = 1){
+	$response = sendRabbit(array('type' => 'register', 'username' => $username, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email));
+	if($response == 0){
+		session_start();
+		$_SESSION['user'] = $username;
+		$obj->sqlerror = false;
+	}else if ($response == 1){
 		$obj->sqlerror = true;
 	}
 }
-
+$obj = json_encode($obj);
+echo $obj;
 ?>

@@ -22,6 +22,10 @@ if($errFlag){
 }else{
 	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => sha1($pass))));
 	$obj->response = $response;
+	if($response == 0){
+		session_start();
+		$_SESSION['user'] = $name;
+	}
 }
 
 $encObj = json_encode($obj);
