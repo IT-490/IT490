@@ -1,8 +1,8 @@
 <?php
 include("functions.php");
 
-$name = sanatize($_REQUEST['name']);
-$pass = sanatize($_REQUEST['pass']);
+$name = sanatize($_REQUEST['username']);
+$pass = sanatize($_REQUEST['password']);
 $errFlag = False;
 $nameErr = False;
 $passErr = False;
