@@ -1,15 +1,20 @@
 <?php
-$db = mysqli_connect($variable);
+$db = mysqli_connect($hostname,$username,$password,$project);
+if(mysqli_connect_error()){
+	Print "Failed to connect to MYSQL:" .mysqli_conect_error();
+	exit();
+}
+include ('account.php');
 require_once('../path.inc');
 require_once('../get_host_info.inc');
 require_once('../rabbitMQLib.inc');
-
+mysqli_select_db($db, $project);
 $recieved = recieveRabbit();
 function process($recieved){
 	var_dump($recieved);
 if($recieved['type'] == 'login'){
 	$sql = "Select username, password FROM users WHERE username = '$user'";
-	$result = mysqli_query($sql);
+	$result = mysqli_query($db,$sql);
 	if(mysqli_num_rows($result) == 0){
 		return 1;
 	}
