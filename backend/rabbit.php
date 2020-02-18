@@ -32,6 +32,7 @@ if($recieved['type'] == 'login'){
 	}
 	else{
 		insert into users (id, username, password, firstname, lastname) values ($id, $user, $pass, $fname, $lname);
+		return 0;
 	}
 }else if($recieved['type'] == 'sanatize'){
 	return mysqli_real_escape_string($db, $recieved['data']);
