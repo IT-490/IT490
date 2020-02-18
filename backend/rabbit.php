@@ -25,7 +25,7 @@ if($recieved['type'] == 'login'){
 	}
 	}
 }else if($recieved['type'] == 'register'){
-	$s="select * from it490 where user = '$user' and pass = '$pass'";
+	$s="select * from it490 where user = '$user'";
 	$t="select top 1 id from users order by id desc";
 	$id = $t +1;
 	if($s != empty){
