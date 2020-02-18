@@ -46,7 +46,7 @@
 <script>
     $(window).on('load', function() {
         $.ajax({
-            url: 'check-session.php', // The Php-Script that checks if the session exists.
+            url: 'validate.php', // The Php-Script that checks if the session exists.
             type: 'GET',
             dataType: 'json'
         })
