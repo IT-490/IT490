@@ -1,8 +1,13 @@
 <?php
-$db = mysqli_connect($
+$db = mysqli_connect($variable);
+require_once('../path.inc');
+require_once('../get_host_info.inc');
+require_once('../rabbitMQLib.inc');
 
 $recieved = recieveRabbit();
-if($recieved['type'] = 'login'){
+function process($recieved){
+	var_dump($recieved);
+if($recieved['type'] == 'login'){
 	$sql = "Select username, password FROM users WHERE username = '$user'";
 	$result = mysqli_query($sql);
 	if(mysqli_num_rows($result) == 0){
@@ -19,8 +24,7 @@ if($recieved['type'] = 'login'){
 	}
 	}
 	}
-}
-if($recieved['type'] = 'register'){
+}else if($recieved['type'] == 'register'){
 	$s="select * from it490 where user = '$user' and pass = '$pass'";
 	$t="select top 1 id from users order by id desc";
 	$id = $t +1;
@@ -29,9 +33,17 @@ if($recieved['type'] = 'register'){
 	}
 	else{
 		insert into users (id, username, password, firstname, lastname) values ($id, $user, $pass, $fname, $lname);
+		return 0;
 	}
-}
-if($recieved['type'] = 'sanatize'){
+}else if($recieved['type'] == 'sanatize'){
+	
+}else if($recieved['type'] == 'log'){
+
+}else if($recieved['type'] == 'update'){
 
 }
+}
+
+$server - new rabbitMQServer("testRabbitMQ", "testServer");
+$server->process_request('process');
 ?>
