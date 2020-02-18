@@ -59,7 +59,7 @@
 <script>
     $(window).on('load', function() {
         $.ajax({
-            url: 'check-session.php', // The php script that checks if the session exists.
+            url: 'validate.php', // The php script that checks if the session exists.
             type: 'GET',
             dataType: 'json'
         })
@@ -128,7 +128,7 @@
         $.ajax({
             url: 'register.php',
             type: 'POST',
-            data: '&first-name=' + firstName + '&last-name=' + lastName + '&username=' + username + '&email-address=' + emailAddress + '&password=' + password,
+            data: '&fname=' + firstName + '&lname=' + lastName + '&name=' + username + '&email=' + emailAddress + '&pass=' + password,
             dataType: 'json'
         })
         .done(function(data) {
