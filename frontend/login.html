@@ -11,7 +11,7 @@
 
 <!--The Top Menu that has a home link to the login page-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <a class="navbar-brand" href="login.html">Home</a>
+    <a class="navbar-brand" href="index.html">Go to Home</a>
 </nav>
 
 <div class="container">
@@ -44,9 +44,22 @@
 <script src="jquery.min.js"></script>
 
 <script>
+    $(window).on('load', function() {
+        $.ajax({
+            url: 'check-session.php', // The php script that checks if the session exists
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function(data) {
+                if(data.set) // A Session exists. Redirect to the "index.html" page
+                    window.location.href = "index.html";
+            })
+            
+    });
+
     $(document).ready(function() {
 
-        // Validate and submit the form after the user clicks on the "SIGN IN" button
+        // Validate and submit the form after the user clicks on the "SIGN IN" button.
         $("#login-form").on("submit", function(e) {
             e.stopPropagation();
             e.preventDefault();
@@ -81,12 +94,12 @@
             data: '&username=' + username + '&password=' + password,
             dataType: 'json'
         })
-        .done(function(data) {
-            alert(data.message);
-        })
-        .fail(function() {
-            alert('An error occurred. Try again.');
-        });
+            .done(function(data) {
+                alert(data.message);
+            })
+            .fail(function() {
+                alert('An error occurred. Try again.');
+            });
     }
 
 </script>
