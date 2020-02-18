@@ -20,7 +20,7 @@ if($errFlag){
 	$obj->nameErr = $nameErr;
 	$obj->passErr = $passErr;
 }else{
-	$response = sendRabbit(array('type' => 'login', 'data' => array('name' => $name, 'pass' => sha1($pass))));
+	$response = sendRabbit(array('type' => 'login', 'data' => array('username' => $name, 'password' => sha1($pass))));
 	$obj->response = $response;
 	if($response == 0){
 		session_start();
