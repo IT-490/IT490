@@ -1,49 +1,146 @@
-<html>
-
-<head> <title>
-Register Page
-</title> </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
 
 <body>
-<h1>
-<font size="30"> <center>Register Page</center> </font>
-</h1>
 
-<form name="Login">
+<!--The Top Menu that has a home link to the index page-->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="index.html">Go to Home</a>
+</nav>
+<br><h1 align="center">New User Registration</h1>
 
-<center>
-Username <input type="text" name="userid"/>    <!-- username -->
-Password <input type="password" name="password"/> <!--Password -->
-Email <input type="email" name= "email"/> <!-- Email -->
+<div class="container">
 
-<br>
-<br>
+    <div class="card mt-4 mb-4">
 
-First Name <input type="text" name="firstname"> <!-- FirstName -->
-Last Name <input type="text" name="lastname">   <!-- LastName -->
+        <div class="card-body">
+            <form id="register-form" action="">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name" id="first-name" required />
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name" id="last-name" required />
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" placeholder="Enter Username" id="username" required />
+                </div>
+                <div class="form-group">
+                    <label for="email-address">Email Address</label>
+                    <input type="email" class="form-control" placeholder="Enter Email Address" id="email-address" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" placeholder="Enter Password" id="password" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+		
+		<div class="card-footer">
+            <p>Already a User?</p>
+            <a href="login.html"><button type="button" class="btn btn-primary">Login</button></a>
+        </div>
 
-<br>
-<br>
+    </div>
 
-<input type="button" onclick="check(this.form)" value="Login"/>
-<input type="reset" value="Cancel"/>
+</div>
 
-</center>
-</form>
+<script src="jquery.min.js"></script>
 
-<script language="javascript">
-function check(form)/*check username & password*/
-{
- /*check is the usernsme & password is correct or not*/
- if(form.userid.value == "meet" && form.password.value == "shah")
-  {
-    window.open('register.html')/*open the same page in new tab*/
-  }
- else
- {
-   alert("Error Password or Username")
-  }
-}
+<script>
+    $(window).on('load', function() {
+        $.ajax({
+            url: 'check-session.php', // The php script that checks if the session exists.
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function(data) {
+                if(data.set) // A Session exists. Redirect to the "index.html" page
+                    window.location.href = "index.html";
+            })
+ 
+    });
+
+    $(document).ready(function() {
+
+        // Validate and submit the form after the user clicks on the "Register" button.
+        $("#register-form").on("submit", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if(dataIsValid()) {
+                submitRegistrationForm();
+            }
+
+        });
+    });
+
+    function dataIsValid() {
+        let firstName = $('#first-name').val();
+        let lastName = $('#last-name').val();
+        let username = $('#username').val();
+        let emailAddress = $('#email-address').val();
+        let password = $('#password').val();
+
+        // Check if all the inputs are filled.
+        if(firstName.length === 0 || lastName.length === 0 || username.length === 0 || emailAddress.length === 0 || password.length === 0) {
+            alert('Not sent. Please fill in all the fields.');
+            return false;
+        }
+
+        // Check if the Password is between 5 to 8 characters long.
+        if(password.length < 5 || password.length > 8) {
+            alert('Not sent. The Password must be between 5 to 8 characters long.');
+            return false;
+        }
+
+        // Check if the Password contains a number/digit.
+        if(/\d+/.test(password) === false) {
+            alert('Not sent. The Password must contain a number/digit.');
+            return false;
+        }
+
+        // Check if the Password contains a special character.
+        if(/[^a-zA-Z0-9]+/.test(password) === false) {
+            alert('Not sent. The Password must contain a special character.');
+            return false;
+        }
+
+        return true;
+    }
+
+    function submitRegistrationForm() {
+        let firstName = $('#first-name').val();
+        let lastName = $('#last-name').val();
+        let username = $('#username').val();
+        let emailAddress = $('#email-address').val();
+        let password = $('#password').val();
+
+        $.ajax({
+            url: 'register.php',
+            type: 'POST',
+            data: '&first-name=' + firstName + '&last-name=' + lastName + '&username=' + username + '&email-address=' + emailAddress + '&password=' + password,
+            dataType: 'json'
+        })
+        .done(function(data) {
+            alert(data.message);
+        })
+        .fail(function() {
+            alert('An error occurred. Please try again.');
+        });
+    }
 </script>
+
 </body>
 </html>
+
+
