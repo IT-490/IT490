@@ -1,5 +1,5 @@
 <?php
-//Include databse connection info 
+$db = mysqli_connect($
 
 $recieved = recieveRabbit();
 if($recieved['type'] = 'login'){
