@@ -1,11 +1,11 @@
 #!/usr/bin/php
 <?php
+include ('account.php');
 $db = mysqli_connect($hostname,$username,$password,$project);
 if(mysqli_connect_error()){
 	Print "Failed to connect to MYSQL:" .mysqli_conect_error();
 	exit();
 }
-include ('account.php');
 require_once('../path.inc');
 require_once('../get_host_info.inc');
 require_once('../rabbitMQLib.inc');
@@ -22,7 +22,7 @@ if($recieved['type'] == 'login'){
 	else{
 	
 	while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-		if($pass == $row['password']){
+		if($pass == $row[$recieved['password']]){
 			return 0;
 		}
 		else{

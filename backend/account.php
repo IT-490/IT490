@@ -1,6 +1,6 @@
 <?php
-$hostname = "localhost";
-$username = "it490";
+$hostname = "it490_1";
+$username = "root";
 $project = "it490db";
-$password = "hqtsmZeu";
+$password = "delta523";
 ?>
