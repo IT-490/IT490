@@ -14,7 +14,7 @@ $recieved = recieveRabbit();
 function process($recieved){
 	var_dump($recieved);
 if($recieved['type'] == 'login'){
-	$sql = "Select username, password FROM users WHERE username = '$user'";
+	$sql = "Select username, password FROM users WHERE username = $recieved['username']";
 	$result = mysqli_query($db,$sql);
 	if(mysqli_num_rows($result) == 0){
 		return 1;
@@ -31,14 +31,14 @@ if($recieved['type'] == 'login'){
 	}
 	}
 }else if($recieved['type'] == 'register'){
-	$s="select * from it490 where user = '$user'";
+	$s="select * from it490 where user = $recieved['username']";
 	$result = mysqli_query($db,$s);
 	if(mysqli_num_rows($result) != 0){
 		return 1;
 	}
 	else{
 		
-		$sql="insert into users ('id', 'username', 'password', 'firstname', 'lastname') values ($id, $user, $pass, $fname, $lname)";
+		$sql="insert into users 'username', 'password', 'firstname', 'lastname') values ($user, $pass, $fname, $lname)";
 		mysqli_query($db,$sql);
 		return 0;
 	}
