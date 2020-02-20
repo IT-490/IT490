@@ -6,9 +6,9 @@ if(mysqli_connect_error()){
 	Print "Failed to connect to MYSQL:" .mysqli_conect_error();
 	exit();
 }
-require_once('../path.inc');
-require_once('../get_host_info.inc');
-require_once('../rabbitMQLib.inc');
+require_once('path.inc');
+require_once('get_host_info.inc');
+require_once('rabbitMQLib.inc');
 mysqli_select_db($db, $project);
 function process($recieved){
 	var_dump($recieved);
@@ -56,6 +56,6 @@ if($recieved['type'] == 'login'){
 }
 }
 
-$server - new rabbitMQServer("testRabbitMQ", "testServer");
-$server->process_request('process');
+$server = new rabbitMQServer("rabbitMQ.ini", "testServer");
+$server->process_requests('process');
 ?>
