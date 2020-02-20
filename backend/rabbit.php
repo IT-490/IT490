@@ -10,7 +10,6 @@ require_once('../path.inc');
 require_once('../get_host_info.inc');
 require_once('../rabbitMQLib.inc');
 mysqli_select_db($db, $project);
-$recieved = recieveRabbit();
 function process($recieved){
 	var_dump($recieved);
 	$username = $recieved['username'];
