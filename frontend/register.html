@@ -64,6 +64,7 @@
             dataType: 'json'
         })
             .done(function(data) {
+		    alert('test1');
                 if(data.set) // A Session exists. Redirect to the "index.html" page
                     window.location.href = "index.html";
             })
@@ -119,24 +120,21 @@
     }
 
     function submitRegistrationForm() {
-        let firstName = $('#first-name').val();
-        let lastName = $('#last-name').val();
-        let username = $('#username').val();
-        let emailAddress = $('#email-address').val();
-        let password = $('#password').val();
-
+        let firstName = $("#first-name").val();
+        let lastName = $("#last-name").val();
+        let username = $("#username").val();
+        let emailAddress = $("#email-address").val();
+        let password = $("#password").val();
+	alert(firstName + " " + lastName + " " + username + " " + emailAddress + " " + password);
         $.ajax({
-            url: 'register.php',
-            type: 'POST',
-            data: '&fname=' + firstName + '&lname=' + lastName + '&name=' + username + '&email=' + emailAddress + '&pass=' + password,
-            dataType: 'json'
-        })
-        .done(function(data) {
-            alert(data.message);
-        })
-        .fail(function() {
-            alert('An error occurred. Please try again.');
-        });
+		url: 'register.php',
+		type: 'POST',
+		data: 'fname=' + firstName + '&lname=' + lastName + '&name=' + username + '&email=' + emailAddress + '&pass' + password,
+            	dataType: 'json'
+	})
+        	.done(function(data) {
+            		alert('this works');
+	});
     }
 </script>
 

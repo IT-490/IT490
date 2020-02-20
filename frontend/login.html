@@ -91,7 +91,7 @@
         $.ajax({
             url: 'login.php',
             type: 'POST',
-            data: '&username=' + username + '&password=' + password,
+            data: 'username=' + username + '&password=' + password,
             dataType: 'json'
         })
             .done(function(data) {

@@ -1,6 +1,6 @@
 <?php
-include ("functions.php");
-
+echo('test');
+include("functions.php");
 $username = sanatize($_REQUEST['name']);
 $password = sanatize($_REQUEST['pass']);
 $firstname = sanatize($_REQUEST['fname']);
@@ -9,26 +9,25 @@ $email = sanatize($_REQUEST['email']);
 
 
 
-$errflag = false 
-if($username == empty){
+$errflag = False; 
+if(empty($username)){
+	$errflag = True;
+}
+if(empty($password)){
+	$errflag = True;
+}
+if(empty($firstname)){
 	$errflag = true;
 }
-if($password == empty){
+if(empty($lastname)){
 	$errflag = true;
 }
-if($firstname == empty){
-	$errflag = true;
-}
-if($lastname == empty){
-	$errflag = true;
-}
-if($email == empty){
+if(empty($email)){
 	$errflag = true;
 }
 if($errflag == true){
 	$obj->dataerror = true;
-}
-else{
+}else{
 	$response = sendRabbit(array('type' => 'register', 'username' => $username, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email));
 	if($response == 0){
 		session_start();
