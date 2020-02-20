@@ -56,6 +56,6 @@ if($recieved['type'] == 'login'){
 }
 }
 
-$server = new rabbitMQServer("rabbitMQ.ini", "testServer");
+$server = new rabbitMQServer("rabbitMQ.ini", "database");
 $server->process_requests('process');
 ?>
