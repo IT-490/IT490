@@ -13,8 +13,13 @@ mysqli_select_db($db, $project);
 $recieved = recieveRabbit();
 function process($recieved){
 	var_dump($recieved);
+	$username = $recieved['username'];
+	$password = $recieved['password'];
+	$firstname = $recieved['firstname'];
+	$lastname = $recieved['lastname'];
+
 if($recieved['type'] == 'login'){
-	$sql = "Select username, password FROM users WHERE username = $recieved['username']";
+	$sql = "Select username, password FROM users WHERE username = $username";
 	$result = mysqli_query($db,$sql);
 	if(mysqli_num_rows($result) == 0){
 		return 1;
@@ -22,7 +27,7 @@ if($recieved['type'] == 'login'){
 	else{
 	
 	while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-		if($pass == $row[$recieved['password']]){
+		if($password == $row["password"]){
 			return 0;
 		}
 		else{
@@ -31,14 +36,14 @@ if($recieved['type'] == 'login'){
 	}
 	}
 }else if($recieved['type'] == 'register'){
-	$s="select * from it490 where user = $recieved['username']";
+	$s="select * from it490 where user = $username";
 	$result = mysqli_query($db,$s);
 	if(mysqli_num_rows($result) != 0){
 		return 1;
 	}
 	else{
 		
-		$sql="insert into users 'username', 'password', 'firstname', 'lastname') values ($recieved['username'], $recieved['password'], $recieved['firstname'], $recieved['lastname'])";
+		$sql="insert into users 'username', 'password', 'firstname', 'lastname') values ($username, $password, $firstname, $lastname)";
 		mysqli_query($db,$sql);
 		return 0;
 	}
