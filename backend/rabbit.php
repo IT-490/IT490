@@ -38,7 +38,7 @@ if($recieved['type'] == 'login'){
 	}
 	else{
 		
-		$sql="insert into users 'username', 'password', 'firstname', 'lastname') values ($user, $pass, $fname, $lname)";
+		$sql="insert into users 'username', 'password', 'firstname', 'lastname') values ($recieved['username'], $recieved['password'], $recieved['firstname'], $recieved['lastname'])";
 		mysqli_query($db,$sql);
 		return 0;
 	}
