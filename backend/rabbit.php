@@ -8,11 +8,13 @@ if(mysqli_connect_error()){
 	exit();
 }
 mysqli_select_db($db, $project);
-echo $input['data']["username"];
+var_dump($input);
 switch($input['type']){
+
 	case "login":
 
-		$sql = "Select * FROM users WHERE username = {$input['data']['username']}";
+		$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
+		echo $sql;
 		$result = mysqli_query($db,$sql);
 		if(mysqli_num_rows($result) == 0){
 			return 1;
@@ -27,7 +29,7 @@ switch($input['type']){
 		}
 	case "register":
 			
-		$s="select * from it490 where user = {$input['data']['username']}";
+		$s="select * from it490 where user = '{$input['data']['username']}'";
 		$result = mysqli_query($db,$s);
 		if(mysqli_num_rows($result) != 0){
 			return 1;
@@ -39,7 +41,7 @@ switch($input['type']){
 		}
 	case "sanatize":
 	
-	return mysqli_real_escape_string($db, $input['data']);
+		return mysqli_real_escape_string($db, $input['data']);
 }
 }
 require_once('path.inc');
