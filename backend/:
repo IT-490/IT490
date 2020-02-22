@@ -8,7 +8,8 @@ if(mysqli_connect_error()){
 	exit();
 }
 mysqli_select_db($db, $project);
-echo $input['data']["username"];
+echo "this is a test code";
+var_dump($input['data']);
 switch($input['type']){
 	case "login":
 
