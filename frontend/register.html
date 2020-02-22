@@ -124,11 +124,12 @@
         let username = $("#username").val();
         let emailAddress = $("#email-address").val();
         let password = $("#password").val();
+	    alert(password);
         $.ajax({
 		url: 'register.php',
 		type: 'POST',
-		data: 'fname=' + firstName + '&lname=' + lastName + '&name=' + username + '&email=' + emailAddress + '&pass' + password,
-            	dataType: 'json'
+		data: {'fname': firstName, 'lname': lastName, 'name': username, 'pass': password, 'email': emailAddress},
+            	dataType: 'text'
 	})
         	.done(function(data) {
 			alert(data);

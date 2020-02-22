@@ -7,8 +7,6 @@ $firstname = sanatize($_REQUEST['fname']);
 $lastname = sanatize($_REQUEST['lname']);
 $email = sanatize($_REQUEST['email']);
 
-
-
 $errflag = False; 
 if(empty($username)){
 	$errflag = True;
@@ -28,7 +26,7 @@ if(empty($email)){
 if($errflag == true){
 	$obj->dataerror = true;
 }else{
-	$response = sendRabbit(array('type' => 'register', 'username' => $username, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email));
+	$response = sendRabbit(array('type' => 'register', 'data' => array('username' => $username, 'password' => sha1($password), 'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email)));
 	if($response == 0){
 		session_start();
 		$_SESSION['user'] = $username;
