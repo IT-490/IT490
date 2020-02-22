@@ -14,13 +14,12 @@ switch($input['type']){
 	case "login":
 
 		$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
-		echo $sql;
 		$result = mysqli_query($db,$sql);
 		if(mysqli_num_rows($result) == 0){
 			return 1;
 		}else{
 			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-				if($password == $row["password"]){
+				if($input['data']['password'] == $row["password"]){
 					return 0;
 				}else{
 					return 2;
@@ -29,13 +28,14 @@ switch($input['type']){
 		}
 	case "register":
 			
-		$s="select * from it490 where user = '{$input['data']['username']}'";
+		$s="select * from users where username = '{$input['data']['username']}'";
 		$result = mysqli_query($db,$s);
 		if(mysqli_num_rows($result) != 0){
 			return 1;
 		}else{
 		
-			$sql="insert into users 'username', 'password', 'firstname', 'lastname') values ({$input['data']['username']},{$input['data']['password']},{$input['data']['firstname']}, {$input['data']['$lastname']})";
+			$sql="insert into users (username, password, firstname, lastname) values ('{$input['data']['username']}','{$input['data']['password']}','{$input['data']['firstname']}', '{$input['data']['lastname']}')";
+			echo$sql;
 			mysqli_query($db,$sql);
 			return 0;
 		}
