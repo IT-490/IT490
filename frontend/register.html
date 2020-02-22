@@ -64,7 +64,6 @@
             dataType: 'json'
         })
             .done(function(data) {
-		    alert('test1');
                 if(data.set) // A Session exists. Redirect to the "index.html" page
                     window.location.href = "index.html";
             })
@@ -125,7 +124,6 @@
         let username = $("#username").val();
         let emailAddress = $("#email-address").val();
         let password = $("#password").val();
-	alert(firstName + " " + lastName + " " + username + " " + emailAddress + " " + password);
         $.ajax({
 		url: 'register.php',
 		type: 'POST',
@@ -133,7 +131,7 @@
             	dataType: 'json'
 	})
         	.done(function(data) {
-            		alert('this works');
+			alert(data);
 	});
     }
 </script>
