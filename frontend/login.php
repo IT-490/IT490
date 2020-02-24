@@ -25,6 +25,7 @@ if($errFlag){
 	if($response == 0){
 		session_start();
 		$_SESSION['user'] = $name;
+		header('Location: ./index.html');
 	}
 }
 

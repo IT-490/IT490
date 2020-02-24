@@ -31,6 +31,7 @@ if($errflag == true){
 		session_start();
 		$_SESSION['user'] = $username;
 		$obj->sqlerror = false;
+		header('Location: ./index.html');
 	}else if ($response == 1){
 		$obj->sqlerror = true;
 	}
