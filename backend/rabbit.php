@@ -28,7 +28,7 @@ function process($input){
 				}
 			}
 		case "register":	
-			$s="select * from users where username = '{$input['data']['username']}'";
+			$s="select * from users where username = '{$input['data']['username']}';";
 			$result = mysqli_query($db,$s);
 			if(mysqli_num_rows($result) != 0){
 				return 1;
