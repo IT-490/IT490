@@ -95,11 +95,12 @@
             dataType: 'json'
         })
             .done(function(data) {
-                alert(data.response);
-            })
-            .fail(function() {
-                alert('An error occurred. Try again.');
-            });
+		    if(data.response == 0){    
+			window.location.href = "index.html";
+		    }else{
+			alert('Error: username or password incorrect');
+		    }
+	    });
     }
 
 </script>

@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" placeholder="Enter Password" id="password" required />
-                </div>
+		</div>
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>
         </div>
@@ -124,16 +124,22 @@
         let username = $("#username").val();
         let emailAddress = $("#email-address").val();
         let password = $("#password").val();
-	    alert(password);
         $.ajax({
 		url: 'register.php',
 		type: 'POST',
 		data: {'fname': firstName, 'lname': lastName, 'name': username, 'pass': password, 'email': emailAddress},
-            	dataType: 'text'
+            	dataType: 'json'
 	})
         	.done(function(data) {
-			alert(data);
-	});
+			if(data.dataerror){
+				alert("Error: Check inputed data");
+			}
+			if(data.sqlerror){
+				alert("Error: username already exists");
+			}else if(data.sqlerror == false){
+				window.location.href = 'index.html';
+				}
+    });
     }
 </script>
 
