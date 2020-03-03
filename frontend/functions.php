@@ -14,4 +14,9 @@ require_once('rabbitMQLib.inc');
 		$data = sendRabbit(array('type' => 'sanatize', 'data' => $data));
 		return $data;
 	}
+	function sendError($data){
+		$client = new rabbitMQClient("rabbitMQ.ini", "log");
+		$response = $client->send_request($data);
+		return $response;
+	}
 ?>
