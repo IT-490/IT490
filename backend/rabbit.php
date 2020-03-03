@@ -40,7 +40,7 @@ function process($input){
 		case "sanatize":
 			return mysqli_real_escape_string($db, $input['data']);
 		case "log":
-			//some code
+			return $input["data"];
 		case "update":
 			//some code
 	}
