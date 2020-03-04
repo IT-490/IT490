@@ -13,7 +13,7 @@ if(isset($_REQUEST['ajax'])){
 		echo true;
 	}
 	exit();
-}else{
+}
 	$id = sanatize($_REQUEST['id']);
 	$cat = sanatize($_REQUEST['cat']);
 	$rows = sendRabbit(array('type'=> 'getPosts', 'data'=> $id));
@@ -36,7 +36,7 @@ if(isset($_REQUEST['ajax'])){
 		echo "</tr>";
 		echo "<tr>";
 		//need to fix line breaking here
-		echo "<td colspan='3' style='word-wrap: break-word;;'>".$row['content']."</td>";
+		echo "<td colspan='3' style='white-space: pre-wrap;'>".$row['content']."</td>";
 		echo "</tr>";
 		echo "<table>";
 		echo "<br>";
@@ -78,5 +78,5 @@ if(isset($_REQUEST['ajax'])){
 			window.location.href = './threads.php?id=$cat';
 		}
 	</script>";
-}
+
 ?>
