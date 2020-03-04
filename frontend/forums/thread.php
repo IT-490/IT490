@@ -1,44 +1,82 @@
 <?php
 include('../functions.php');
+session_start();
 if(isset($_REQUEST['ajax'])){
-	//add error handling here
-	session_start();
+	//add error handling here\
 	$user = sanatize($_SESSION['user']);
 	$content = sanatize($_REQUEST['content']);
-	sendRabbit(array('type'=> 'newPost', 'data'=> array('user'=> $user, 'content'=> $content)));
+	$id = sanatize($_REQUEST['id']);
+	if(empty($content) or empty($id)){
+		echo false;
+	}else{
+		sendRabbit(array('type'=> 'newPost', 'data'=> array('user'=> $user, 'content'=> $content, 'id'=> $id)));
+		echo true;
+	}
 	exit();
-}else{
+}
 	$id = sanatize($_REQUEST['id']);
 	$cat = sanatize($_REQUEST['cat']);
 	$rows = sendRabbit(array('type'=> 'getPosts', 'data'=> $id));
 	include('header.php');
-	echo '<button onclick="goBack()">Back</button>';
-	echo '<table>';
+	echo '<div class="container mt-4 mb-4 mw-100">';
+	echo '<button class="btn btn-dark" onclick=goBack()>Back</button><br><br>';
+	//echo '<table>';
 	foreach($rows as $row){
+		echo "
+		<table class='table'>
+		<thead class='thead-dark'>
+		<tr>
+			<th scope='col'>".date('Y-m-d h:i A',strtotime($row['postDate']))."</th>
+			<th></th>
+			<th></th>
+		</tr>
+		";
 		echo "<tr>";
-		echo "<td><a href='../profile.php?user=".$row['poster']."'>".$row['poster']."</td>";
-		echo "<td>".$row['postDate']."</td>";
-		echo "<td>".$row['content']."</td>";
+		echo "<td colspan='3'><a href='../profile.php?user=".$row['poster']."'>".$row['poster']."</td>";
 		echo "</tr>";
+		echo "<tr>";
+		//need to fix line breaking here
+		echo "<td colspan='3' style='white-space: pre-wrap;'>".$row['content']."</td>";
+		echo "</tr>";
+		echo "<table>";
+		echo "<br>";
 	}
-	echo '</table>';
-	echo '<form>';
-	echo '<textarea id="content" rows="10" cols="50"></textarea>';
-	echo '</form>';
-
-	echo '<button id="content" onclick="sendData()">Reply</button>';
+	//echo '</table><br>';
+	if(isset($_SESSION['user'])){
+		echo '<form id="post-form">';
+		echo '<textarea class="form-control mw-100" maxlength="2000" id="content" rows="8" required></textarea>';
+		echo '<br>';
+		echo '<button class="btn btn-dark">Reply</button>';
+		echo '</form>';
+		echo "
+		<script>
+	 		$('#post-form').on('submit', function(e){
+				e.stopPropagation();
+                        	e.preventDefault();
+                        	sendData();
+                        });
+			function sendData(){
+				var content = $('#content').val();
+				$.ajax({
+				url: 'thread.php',
+				type: 'POST',
+				data: {'ajax': 'true', 'content': content, 'id': $id}
+				}).done(function(data){
+					if(data == false){
+						alert('ERROR: invalid data');
+					}else{
+						location.reload();
+					}
+				});
+			}
+		</script>";
+	}
 	echo "
+	</div>
 	<script>
-		function sendData(){
-			var content = $(#'content').val();
-			$.ajax({
-			url: 'thread.php',
-			type: 'POST',
-			data: {'ajax': 'true', 'content': content}
-			}).done({
-				location.reload();
-			});
+		function goBack(){
+			window.location.href = './threads.php?id=$cat';
 		}
 	</script>";
-}
+
 ?>

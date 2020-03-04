@@ -22,6 +22,8 @@ function process($input){
 	$db = mysqli_connect($hostname,$username,$password,$project);
 	if(mysqli_connect_error()){
 		Print "Failed to connect to MYSQL:" .mysqli_conect_error();
+		$result = mysqli_connect_error();
+		error($result);
 		exit();
 	}
 	mysqli_select_db($db, $project);
@@ -30,6 +32,10 @@ function process($input){
 		case "login":
 			$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
 			$result = mysqli_query($db,$sql);
+			if($result != $sql){
+				error($result);
+				return null;
+				break;
 			if(mysqli_num_rows($result) == 0){
 				return 1;
 			}else{
@@ -44,6 +50,10 @@ function process($input){
 		case "register":	
 			$s="select * from users where username = '{$input['data']['username']}';";
 			$result = mysqli_query($db,$s);
+			if($result !=$s){
+				error($result);
+				return null;
+				break;
 			if(mysqli_num_rows($result) != 0){
 				return 1;
 			}else{
@@ -74,7 +84,7 @@ function process($input){
 
 			}
 		case "newThread":
-			$sql = "INSERT INTO forum_topics (subject, topicShow, topicCreator) values ('{$input['data']['subject']}', {$input['data']['show']}, '{$input['data']['user']}')";
+			$sql = "INSERT INTO forum_topics (subject, topicShow, topicCreator, lastPoster) values ('{$input['data']['subject']}', {$input['data']['show']}, '{$input['data']['user']}', '{$input['data']['user']}')";
 			if(mysqli_query($db,$sql)){
 				$id = mysqli_insert_id($db);
 				$response = process(array('type'=>'newPost', 'data'=> array('content'=> $input['data']['content'], 'user'=> $input['data']['user'], 'id'=> $id)));
@@ -105,7 +115,7 @@ function process($input){
 			}
 		case "newPost":
 			$sql = "INSERT INTO forum_posts (content, poster, postTopic) values ('{$input['data']['content']}', '{$input['data']['user']}', {$input['data']['id']});";
-			$sql .= "UPDATE forum_topics SET postCount = postCount + 1 WHERE topicID = {$input['data']['id']};";
+			$sql .= "UPDATE forum_topics SET postCount = postCount + 1, lastPoster = '{$input['data']['user']}' WHERE topicID = {$input['data']['id']};";
 			echo $sql;
 			//need to fix up this section of code
 			mysqli_multi_query($db, $sql);
@@ -116,6 +126,10 @@ function process($input){
 			//	return 1;
 			//}
 	}
+}
+function error ($result){
+	include('../frontend/functions.php/');
+	sendError($result);
 }
 
 $server = new rabbitMQServer("rabbitMQ.ini", "database");
