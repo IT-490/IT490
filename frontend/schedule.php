@@ -1,13 +1,14 @@
 <?php
 
-require_once('function.php');
+require_once('functions.php');
+session_start();
+$user = sanatize($_SESSION['user']);
+$response = sendRabbit(array('type'=> 'getSchedule', 'data'=> $user));
+$data = array('Sunday'=> array('name'=> 'Sunday'), 'Monday'=> array('name'=> 'Monday'), 'Tuesday'=> array('name'=> 'Tuesday'), 'Wednesday'=> array('name'=> 'Wednesday'), 'Thursday'=> array('name'=>'Thursday'), 'Friday'=> array('name'=>'Friday'),'Saturday'=> array('name'=>'Saturday'));
 
-$data = [
-    'action' => 'get_schedule'
-];
-
-$response = sendRabbit($data);
-
+foreach($response as $show){
+	$data[date('l', strtotime($show['airdate']))]['shows'][] = array('name'=> $show['name'], 'airdate'=> date('g:i A', strtotime($show['airdate']))); 	
+}
 // If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {
     echo json_encode($response);
@@ -47,20 +48,20 @@ if(isset($_REQUEST['ajax'])) {
 
     <div class="table-responsive">
         <table id="schedule" class="table table-bordered">
-            <thead class="bg-light">
-                <tr>
-                    <?php foreach ($response as $schedule) { ?>
-                        <th><?php echo $schedule['day'] ?><br><?php echo $schedule['date'] ?></th>
+           <thead class="bg-light">
+		<tr>
+                    <?php foreach ($data as $day) { ?>
+                        <th><?php echo $day['name'] ?></th>
                     <?php } ?>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <?php foreach ($response as $schedule) { ?>
+                    <?php foreach ($data as $shows){ ?>
                         <td>
                             <ul class="">
-                                <?php foreach ($schedule['shows'] as $show) { ?>
-                                    <li><b><?php echo  $show['upcoming_episodes'][0]['time'] ?></b> <br> <?php echo $show['name'] . ' on ' . $show['upcoming_episodes'][0]['channel'] ?></li>
+                                <?php foreach ($shows['shows'] as $show) { ?>
+                                    <li><b><?php echo  $show['name'] ?></b> <br> <?php echo $show['airdate']?></li>
                                 <?php } ?>
                             </ul>
                         </td>
@@ -101,8 +102,8 @@ if(isset($_REQUEST['ajax'])) {
             dataType: 'json'
         })
             .done(function (data) {
-                for (let show of data)
-                    $("#shows-list").append("<a href='shows.php?id=" + show.id + "' class='list-group-item'>" + show.name + "</a>");
+                //for (let show of data)
+                   // $("#shows-list").append("<a href='shows.php?id=" + show.id + "' class='list-group-item'>" + show.name + "</a>");
             });
     });
 
