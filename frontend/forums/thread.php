@@ -6,7 +6,12 @@ if(isset($_REQUEST['ajax'])){
 	$user = sanatize($_SESSION['user']);
 	$content = sanatize($_REQUEST['content']);
 	$id = sanatize($_REQUEST['id']);
-	sendRabbit(array('type'=> 'newPost', 'data'=> array('user'=> $user, 'content'=> $content, 'id'=> $id)));
+	if(empty($content) or empty($id)){
+		echo false;
+	}else{
+		sendRabbit(array('type'=> 'newPost', 'data'=> array('user'=> $user, 'content'=> $content, 'id'=> $id)));
+		echo true;
+	}
 	exit();
 }else{
 	$id = sanatize($_REQUEST['id']);
@@ -38,13 +43,18 @@ if(isset($_REQUEST['ajax'])){
 	}
 	//echo '</table><br>';
 	if(isset($_SESSION['user'])){
-		echo '<form>';
-		echo '<textarea class="form-control mw-100" maxlength="2000" id="content" rows="8" ></textarea>';
-		echo '</form>';
+		echo '<form id="post-form">';
+		echo '<textarea class="form-control mw-100" maxlength="2000" id="content" rows="8" required></textarea>';
 		echo '<br>';
-		echo '<button class="btn btn-dark" id="content" onclick=sendData()>Reply</button>';
+		echo '<button class="btn btn-dark">Reply</button>';
+		echo '</form>';
 		echo "
 		<script>
+	 		$('#post-form').on('submit', function(e){
+				e.stopPropagation();
+                        	e.preventDefault();
+                        	sendData();
+                        });
 			function sendData(){
 				var content = $('#content').val();
 				$.ajax({
@@ -52,7 +62,11 @@ if(isset($_REQUEST['ajax'])){
 				type: 'POST',
 				data: {'ajax': 'true', 'content': content, 'id': $id}
 				}).done(function(data){
-					location.reload();
+					if(data == false){
+						alert('ERROR: invalid data');
+					}else{
+						location.reload();
+					}
 				});
 			}
 		</script>";
