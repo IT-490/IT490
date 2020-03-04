@@ -2,7 +2,7 @@
 
 require_once('function.php');
 
-// The requested show id. Default is 0
+// The requested show id. Default is 1
 $showId = isset($_REQUEST['id']) && !empty($_REQUEST['id']) ? trim($_REQUEST['id']) : 1;
 $action = isset($_REQUEST['action']) && !empty($_REQUEST['action']) ? trim($_REQUEST['action']) : 'get_show';
 
@@ -14,6 +14,10 @@ if($action == 'like_show')
     $data = ['action' => 'like_show', 'show_id' => $showId];
 if($action == 'follow_show')
     $data = ['action' => 'follow_show', 'show_id' => $showId];
+if($action == 'unlike_show')
+    $data = ['action' => 'unlike_show', 'show_id' => $showId];
+if($action == 'unfollow_show')
+    $data = ['action' => 'unfollow_show', 'show_id' => $showId];
 
 $response = sRabbit($data);
 
@@ -31,7 +35,7 @@ if(isset($_REQUEST['ajax'])) {
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="bootstrap.min.css">
-    <title>Home</title>
+    <title>Shows</title>
     <style type="text/css">
         nav {
             box-shadow: 2px 2px 10px #888;
@@ -73,7 +77,7 @@ if(isset($_REQUEST['ajax'])) {
         <div class="col-sm-8">
             <h4>Show: <span id="show-name" class="text-muted"><?php echo $response['name'] ?></span></h4>
             <h4>Genre: <span id="show-genre" class="text-muted"><?php echo $response['genre'] ?></span></h4>
-            <h4>Upcoming episodes:</h4>
+            <h4>Upcoming Episodes: </h4>
             <table id="upcoming-episodes" class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
@@ -94,9 +98,9 @@ if(isset($_REQUEST['ajax'])) {
             </table>
 
             <div class="mt-4">
-                <a id="like-button" style="display: none;" href="#" class="has-session"><button class="btn btn-primary">LIKE</button></a>
-                <a id="follow-button" style="display: none;" href="#" class="has-session"><button class="btn btn-primary">FOLLOW</button></a>
-                <a id="forums-button" href="#"><button class="btn btn-primary">GO TO FORUMS</button></a>
+                <a id="like-button" data-liked="<?php echo $response['liked'] == true ? 1 : 0 ?>" style="display: none;" href="#" class="has-session"><button class="btn btn-primary"><?php echo $response['liked'] == true ? 'UNLIKE' : 'LIKE' ?></button></a>
+                <a id="follow-button" data-following="<?php echo $response['following'] == true ? 1 : 0 ?>" style="display: none;" href="#" class="has-session"><button class="btn btn-primary"><?php echo $response['following'] == true ? 'UNFOLLOW' : 'FOLLOW' ?></button></a>
+                <a id="forums-button" href="#"><button class="btn btn-primary">Go to Forums</button></a>
             </div>
         </div>
     </div>
@@ -129,35 +133,72 @@ if(isset($_REQUEST['ajax'])) {
     });
 
     $(document).ready(function() {
-
-        // User clicked on the "Like" button.
+        // Toggle "Liked" status
         $("#like-button").on("click", function(e) {
-            $.ajax({
-                url: 'shows.php', // The php script that clears the session
-                type: 'POST',
-                data: { "ajax": true, "action": "like_show", "id": <?php echo $showId ?> },
-                dataType: 'json'
-            })
-                .done(function(data) {
-                    if(data.success) alert("Show liked!")
-                })
+            $(this).data('liked') === 1 ? unlikeShow() : likeShow();
         });
 
-
-        // User clicked on the "Follow" button.
+        // Toggle "Following" status
         $("#follow-button").on("click", function(e) {
-            $.ajax({
-                url: 'shows.php', // The php script that clears the session
-                type: 'POST',
-                data: { "ajax": true, "action": "follow_show", "id": <?php echo $showId ?> },
-                dataType: 'json'
-            })
-                .done(function(data) {
-                    if(data.success) alert("Show followed!")
-                })
+            $(this).data('following') === 1 ? unfollowShow() : followShow();
         });
-
     });
+
+    function likeShow() {
+        $("#like-button").data('liked', 1);
+        $("#like-button button").text('UNLIKE');
+
+        $.ajax({
+            url: 'shows.php',
+            type: 'POST',
+            data: { "ajax": true, "action": "like_show", "id": <?php echo $showId ?> },
+            dataType: 'json'
+        }).done(function(data) {
+
+        })
+    }
+
+    function unlikeShow() {
+        $("#like-button").data('liked', 0);
+        $("#like-button button").text('LIKE');
+
+        $.ajax({
+            url: 'shows.php',
+            type: 'POST',
+            data: { "ajax": true, "action": "unlike_show", "id": <?php echo $showId ?> },
+            dataType: 'json'
+        }).done(function(data) {
+
+        })
+    }
+
+    function followShow() {
+        $("#follow-button").data('following', 1);
+        $("#follow-button button").text('UNFOLLOW');
+
+        $.ajax({
+            url: 'shows.php',
+            type: 'POST',
+            data: { "ajax": true, "action": "follow_show", "id": <?php echo $showId ?> },
+            dataType: 'json'
+        }).done(function(data) {
+
+        })
+    }
+
+    function unfollowShow() {
+        $("#follow-button").data('following', 0);
+        $("#follow-button button").text('FOLLOW');
+
+        $.ajax({
+            url: 'shows.php',
+            type: 'POST',
+            data: { "ajax": true, "action": "unfollow_show", "id": <?php echo $showId ?> },
+            dataType: 'json'
+        }).done(function(data) {
+
+        })
+    }
 
 </script>
 
