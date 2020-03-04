@@ -4,7 +4,7 @@
  * The $data parameter is assumed to always contain a key named 'action'.
  * The key could be used by rabbit to determine the kind of data we're looking for
  */
-function sRabbit($data) {
+function sendRabbit($data) {
     $sampleShows = [
         [
             'id' => 1,

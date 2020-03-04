@@ -6,7 +6,7 @@ $data = [
     'action' => 'get_schedule'
 ];
 
-$response = sRabbit($data);
+$response = sendRabbit($data);
 
 // If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {

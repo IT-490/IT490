@@ -19,7 +19,7 @@ if($action == 'unlike_show')
 if($action == 'unfollow_show')
     $data = ['action' => 'unfollow_show', 'show_id' => $showId];
 
-$response = sRabbit($data);
+$response = sendRabbit($data);
 
 // If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {
