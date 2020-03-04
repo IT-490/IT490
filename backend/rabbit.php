@@ -32,10 +32,9 @@ function process($input){
 		case "login":
 			$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
 			$result = mysqli_query($db,$sql);
-			if($result != $sql){
+			if($result == false){
 				error($result);
-				return null;
-				break;
+				return 1;
 			if(mysqli_num_rows($result) == 0){
 				return 1;
 			}else{
@@ -50,10 +49,9 @@ function process($input){
 		case "register":	
 			$s="select * from users where username = '{$input['data']['username']}';";
 			$result = mysqli_query($db,$s);
-			if($result !=$s){
+			if($result == false){
 				error($result);
-				return null;
-				break;
+				return 1;
 			if(mysqli_num_rows($result) != 0){
 				return 1;
 			}else{
