@@ -22,6 +22,8 @@ function process($input){
 	$db = mysqli_connect($hostname,$username,$password,$project);
 	if(mysqli_connect_error()){
 		Print "Failed to connect to MYSQL:" .mysqli_conect_error();
+		$result = mysqli_connect_error();
+		error($result);
 		exit();
 	}
 	mysqli_select_db($db, $project);
@@ -30,6 +32,10 @@ function process($input){
 		case "login":
 			$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
 			$result = mysqli_query($db,$sql);
+			if($result != $sql){
+				error($result);
+				return null;
+				break;
 			if(mysqli_num_rows($result) == 0){
 				return 1;
 			}else{
@@ -44,6 +50,10 @@ function process($input){
 		case "register":	
 			$s="select * from users where username = '{$input['data']['username']}';";
 			$result = mysqli_query($db,$s);
+			if($result !=$s){
+				error($result);
+				return null;
+				break;
 			if(mysqli_num_rows($result) != 0){
 				return 1;
 			}else{
@@ -116,6 +126,10 @@ function process($input){
 			//	return 1;
 			//}
 	}
+}
+function error ($result){
+	include('../frontend/functions.php/');
+	sendError($result);
 }
 
 $server = new rabbitMQServer("rabbitMQ.ini", "database");
