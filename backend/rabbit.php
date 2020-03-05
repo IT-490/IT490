@@ -181,6 +181,7 @@ function process($input){
 					return 0;
 				}else{
 					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+						
 						$data[] = $row;
 					}
 					return $data;
@@ -525,7 +526,10 @@ function process($input){
 			}
 		case "getUsers":
 			$sql = "SELECT name, email FROM users";
-			$result = mysqli_query($db, $sql);
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
 			$data = array();
 			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 				$data[] = $row;
@@ -535,7 +539,7 @@ function process($input){
 }
 function error ($result){
 	//include('../frontend/functions.php');
-	sendError($result);
+	sendError("DB: ".$result);
 }
 
 $server = new rabbitMQServer("rabbitMQ.ini", "database");
