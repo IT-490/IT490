@@ -41,26 +41,6 @@
 
 <br><h1 align="center">Home</h1>
 
-<div class="container">
-    <div class="text-center mt-4 has-session" style="display: none;">
-        <a href="schedule.php"><button type="button" class="btn btn-primary">Schedule</button></a>
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <div class="col-8 offset-2">
-            <div class="card">
-                <div class="card-header">Shows</div>
-                <div class="card-body">
-                    <div id="shows-list" class="list-group"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
 
 <script src="jquery.min.js"></script>
 <script>
@@ -88,18 +68,6 @@
     });
 
     $(document).ready(function() {
-
-        // Get all shows. Just for the link to their individual pages
-        $.ajax({
-            url: 'shows.php',
-            type: 'POST',
-            data: { "ajax": true, "action": "get_shows" },
-            dataType: 'json'
-        })
-            .done(function(data) {
-                for (let show of data)
-                    $("#shows-list").append("<a href='shows.php?id=" + show.id + "' class='list-group-item'>" + show.name + "</a>");
-            });
 
         // User clicked on the "Logout" button. Notify the php script, and switch to the signed-out version
         $("#logout-button").on("click", function(e) {
