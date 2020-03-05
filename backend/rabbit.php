@@ -3,6 +3,7 @@
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+include('../frontend/functions.php');
 function getShow($db, $showID){
 	$sql = "SELECT name FROM shows WHERE showID = {$showID}";
 	
@@ -506,11 +507,27 @@ function process($input){
 			}else{
 				return false;
 			}
+		case "search":
+			$sql = "SELECT * FROM shows WHERE name LIKE '%{$input['data']}%'";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) == 0){
+				$response = sendAPI(array('type'=>'search', 'data'=> $input['data']));
+				foreach($response as $row){
+					if(empty($row['airtime'])){
+						//add just the show can copy code from above
+					}else{
+						//call update bit
+					}
+				}
+			}	
 	}
 }
 function error ($result){
-	include('../frontend/functions.php');
-	sendError($result);
+	//include('../frontend/functions.php');
+	//sendError($result);
 }
 
 $server = new rabbitMQServer("rabbitMQ.ini", "database");
