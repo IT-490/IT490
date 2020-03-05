@@ -16,6 +16,8 @@ for($i = 0; $i < 7; $i++){
 		$data['show'] = sanatize($show['show']['name']);
 		$data['network'] = sanatize($show['show']['network']['name']);
 		$data['airdate'] = sanatize($show['airdate']." ".$show['airtime'].":00");
+		$data['poster'] = sanatize($show['show']['image']['original']);
+
 		$shows[] = $data;
 	}
 	curl_close($ch);
