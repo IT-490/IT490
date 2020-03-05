@@ -1,5 +1,4 @@
 <?php
-$data = array();
-$data[date('l')] = 1;
-var_dump($data);
+include('functions.php');
+sendError('test');
 ?>

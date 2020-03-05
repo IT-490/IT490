@@ -9,6 +9,12 @@ require_once('rabbitMQLib.inc');
 		return $response;	
 	}
 
+	function sendAPI($data){
+		$client = new rabbitMQClient("rabbitMQ.ini","dmz");
+		$response = $client->send_request($data);
+		return $response;	
+	}
+
 	function sanatize($data){
 		$data = trim($data);
 		$data = sendRabbit(array('type' => 'sanatize', 'data' => $data));

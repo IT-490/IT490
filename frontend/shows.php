@@ -72,7 +72,7 @@ if(isset($_REQUEST['ajax'])) {
 
 <nav style="display: none" class="has-session navbar navbar-expand-sm bg-light navbar-light">
     <a class="navbar-brand" href="index.html">Home</a>
-    <span id="welcome-message" class="ml-auto navbar-text mr-3"></span>
+    <a id="welcome-message" class="ml-auto navbar-text mr-3"></a>
 </nav>
 
 
@@ -143,11 +143,13 @@ if(isset($_REQUEST['ajax'])) {
             .done(function(data) {
                 if(data.set) { // A Session exists. Switch to the signed-in version
                     $("#welcome-message").text("Welcome, " + data.username + "!");
-                    $(".no-session").hide();
+		    $("#welcome-message").attr("href", "./profile.php");
+		    $(".no-session").hide();
                     $(".has-session").show();
                 } else { // No session. Switch to the signed-out version
                     $("#welcome-message").text("");
-                    $(".has-session").hide();
+		    $("#welcome-message").attr("href", "");
+		    $(".has-session").hide();
                     $(".no-session").show();
                 }
             })

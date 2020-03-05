@@ -12,7 +12,11 @@ if(isset($_REQUEST['ajax'])){
 	exit();
 }
 include('./forums/header.php');
-$user = sanatize($_REQUEST['user']);
+if(empty($_REQUEST['user']) && isset($_SESSION['user'])){
+	$user = sanatize($_SESSION['user']);
+}else{
+	$user = sanatize($_REQUEST['user']);
+}
 $requestor = sanatize($_SESSION['user']);
 $data = sendRabbit(array('type'=> 'getProfile', 'data'=> array('user'=> $user, 'requestor'=> $requestor)));
 echo "<div class='container mt-4 mb-4 '>";
