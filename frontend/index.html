@@ -30,7 +30,7 @@
 </nav>
 
 <nav style="display: none" class="has-session navbar navbar-expand-sm bg-light navbar-light justify-content-end">
-    <span id="welcome-message" class="navbar-text mr-3"></span>
+    <a id="welcome-message" class="navbar-text mr-3"></a>
 
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -54,10 +54,12 @@
             .done(function(data) {
                 if(data.set) { // A Session exists. Switch to the signed-in version
                     $("#welcome-message").text("Welcome, " + data.username + "!");
-                    $(".no-session").hide();
+                    $("#welcome-message").attr("href", "./profile.php");
+		    $(".no-session").hide();
                     $(".has-session").show();
                 } else { // No session. Switch to the signed-out version
                     $("#welcome-message").text("");
+                    $("#welcome-message").attr("href", "");
                     $(".has-session").hide();
                     $(".no-session").show();
                 }
@@ -74,15 +76,14 @@
             $.ajax({
                 url: 'logout.php', // The php script that clears the session
                 type: 'POST',
-                dataType: 'json'
             })
                 .done(function(data) {
                     $("#welcome-message").text("");
                     $(".has-session").hide();
                     $(".no-session").show();
                 })
-                .fail(function() {
-                    alert('An error occurred. Try again.');
+                .fail(function(e, x) {
+                    alert('An error occurred. Try again.' + e + x);
                 });
 
         });

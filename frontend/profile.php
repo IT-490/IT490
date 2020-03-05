@@ -12,7 +12,11 @@ if(isset($_REQUEST['ajax'])){
 	exit();
 }
 include('./forums/header.php');
-$user = sanatize($_REQUEST['user']);
+if(empty($_REQUEST['user']) && isset($_SESSION['user'])){
+	$user = sanatize($_SESSION['user']);
+}else{
+	$user = sanatize($_REQUEST['user']);
+}
 $requestor = sanatize($_SESSION['user']);
 $data = sendRabbit(array('type'=> 'getProfile', 'data'=> array('user'=> $user, 'requestor'=> $requestor)));
 echo "<div class='container mt-4 mb-4 '>";
@@ -47,6 +51,8 @@ if($data == 2){
 			}
 		</script>
 		";
+	}else if($user == $requestor && isset($_SESSION['user'])){
+		echo "<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>";
 	}
 	echo "		
 		<br><br>
@@ -58,7 +64,7 @@ if($data == 2){
 	foreach($data['shows'] as $show){
 		echo "
 		<tr>
-			<td style='text-align: center'>$show</td>
+			<td style='text-align: center'><a href='./shows.php?id={$show['id']}'>{$show['name']}</a></td>
 		</tr>
 		";
 	}
@@ -74,7 +80,7 @@ if($data == 2){
 	foreach($data['friends'] as $friend){
 		echo "
 		<tr>
-			<td style='text-align: center'>$friend</td>
+			<td style='text-align: center'><a href='./profile.php?user=$friend'>$friend</a></td>
 		</tr>
 		";
 	}

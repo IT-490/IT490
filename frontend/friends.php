@@ -46,7 +46,7 @@ echo "
 </div>
 <div id='requests' style = 'display: none'>
 <table class='table'>";
-if(empty($data['request'])){
+if(empty($data['requests'])){
 	echo "
 	<tr>
 	<td style='text-align: center'>
