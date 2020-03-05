@@ -85,7 +85,7 @@ function process($input){
 			if(mysqli_num_rows($result) != 0){
 				return 1;
 			}else{
-				$sql="insert into users (username, password, firstname, lastname) values ('{$input['data']['username']}','{$input['data']['password']}','{$input['data']['firstname']}', '{$input['data']['lastname']}')";
+				$sql="insert into users (username, password, firstname, lastname, email) values ('{$input['data']['username']}','{$input['data']['password']}','{$input['data']['firstname']}', '{$input['data']['lastname']}', '{$input['data']['email']}')";
 				mysqli_query($db,$sql);
 					return 0;
 			}
@@ -522,12 +522,20 @@ function process($input){
 						//call update bit
 					}
 				}
-			}	
+			}
+		case "getUsers":
+			$sql = "SELECT name, email FROM users";
+			$result = mysqli_query($db, $sql);
+			$data = array();
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				$data[] = $row;
+			}
+			return $data;
 	}
 }
 function error ($result){
 	//include('../frontend/functions.php');
-	//sendError($result);
+	sendError($result);
 }
 
 $server = new rabbitMQServer("rabbitMQ.ini", "database");
