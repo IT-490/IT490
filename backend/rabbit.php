@@ -22,6 +22,7 @@ function isFriend($db, $user, $friend){
 	$sql = "SELECT * FROM friends WHERE (user = '$user' or friend = '$user') and (user = '$friend' or friend = '$friend') and accepted = true";
 	echo $sql;
 	if(!($result = mysqli_query($db, $sql))){
+		error($result);
 		return 3;
 	}else{
 		if(mysqli_num_rows($result) == 0){
@@ -36,6 +37,7 @@ function isRequest($db, $user, $friend){
 	$sql = "SELECT * FROM friends WHERE (user = '$user' or friend = '$user') and (user = '$friend' or friend = '$friend') and accepted = false";
 	echo $sql;
 	if(!($result = mysqli_query($db, $sql))){
+		error($result);
 		return 3;
 	}else{
 		if(mysqli_num_rows($result) == 0){
