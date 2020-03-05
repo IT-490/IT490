@@ -5,6 +5,7 @@ require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 function getShow($db, $showID){
 	$sql = "SELECT name FROM shows WHERE showID = {$showID}";
+	
 	if(($result = mysqli_query($db, $sql)) == false){
 		//error happened here
 	}else{
@@ -20,9 +21,7 @@ function getShow($db, $showID){
 
 function isFriend($db, $user, $friend){
 	$sql = "SELECT * FROM friends WHERE (user = '$user' or friend = '$user') and (user = '$friend' or friend = '$friend') and accepted = true";
-	echo $sql;
 	if(!($result = mysqli_query($db, $sql))){
-		error($result);
 		return 3;
 	}else{
 		if(mysqli_num_rows($result) == 0){
@@ -35,9 +34,7 @@ function isFriend($db, $user, $friend){
 
 function isRequest($db, $user, $friend){
 	$sql = "SELECT * FROM friends WHERE (user = '$user' or friend = '$user') and (user = '$friend' or friend = '$friend') and accepted = false";
-	echo $sql;
 	if(!($result = mysqli_query($db, $sql))){
-		error($result);
 		return 3;
 	}else{
 		if(mysqli_num_rows($result) == 0){
@@ -53,7 +50,7 @@ function process($input){
 	if(mysqli_connect_error()){
 		Print "Failed to connect to MYSQL:" .mysqli_conect_error();
 		$result = mysqli_connect_error();
-		error($result);
+		error("Failed to connect to MYSQL:" .mysqli_conect_error());
 		exit();
 	}
 	mysqli_select_db($db, $project);
@@ -63,8 +60,9 @@ function process($input){
 			$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
 			$result = mysqli_query($db,$sql);
 			if($result == false){
-				error($result);
+				error("ERROR: ".$sql." failed to execute");
 				return 3;
+			}
 			if(mysqli_num_rows($result) == 0){
 				return 1;
 			}else{
@@ -79,9 +77,10 @@ function process($input){
 		case "register":	
 			$s="select * from users where username = '{$input['data']['username']}';";
 			$result = mysqli_query($db,$s);
-			if($result == false){
-				error($result);
+			if($result == false){	
+				error("ERROR: ".$sql." failed to execute");
 				return 3;
+			}	
 			if(mysqli_num_rows($result) != 0){
 				return 1;
 			}else{
@@ -100,15 +99,18 @@ function process($input){
 				$sql = "SELECT * FROM shows WHERE name = '{$show['show']}'";
 				if(!($result= mysqli_query($db, $sql))){
 					echo $sql.PHP_EOL;
+					error("ERROR: ".$sql." failed to execute");
 					return 1;
 				}
 				if(mysqli_num_rows($result) == 0){
 					//if it doesnt create it and set showID to $id
-					$sql = "INSERT INTO shows (name, network) values ('{$show['show']}', '{$show['network']}')";
+					$sql = "INSERT INTO shows (name, network, poster) values ('{$show['show']}', '{$show['network']}', '{$show['poster']}')";
 					if(!(mysqli_query($db, $sql))){
+						error("ERROR: ".$sql." failed to execute");
 						return 1;
+					}else{
+						$id = mysqli_insert_id($db);
 					}
-					$id = mysqli_insert_id($db);
 				}else{
 					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 						//if it does set showID to $id
@@ -118,6 +120,7 @@ function process($input){
 				//check to see if episode is already in table
 				$sql = "SELECT * FROM episodes WHERE showID = $id and airdate = '{$show['airdate']}'";
 				if(!($result = mysqli_query($db, $sql))){
+					error("ERROR: ".$sql." failed to execute");
 					echo $sql.PHP_EOL;
 					return 1;
 				}
@@ -125,6 +128,7 @@ function process($input){
 					//if episode not already in table add it
 					$sql = "INSERT INTO episodes (name, showID, airdate) values ('{$show['name']}', $id, '{$show['airdate']}')";
 					if(!(mysqli_query($db, $sql))){
+						error("ERROR: ".$sql." failed to execute");
 						echo $sql.PHP_EOL;
 						return 1;
 					}
@@ -137,6 +141,7 @@ function process($input){
 			$data = array();
 			$data['rows'] = array();
 			if(!($result = mysqli_query($db,$sql))){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				if(!($data['show'] = getShow($db, $input['data']))){
@@ -161,12 +166,14 @@ function process($input){
 				}
 			}else{
 				//error happened here
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}
 		case "getPosts":
 			$sql = "SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = {$input['data']}";
 			$data = array();
 			if(!($result = mysqli_query($db,$sql))){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				if(mysqli_num_rows($result) == 0){
@@ -198,6 +205,7 @@ function process($input){
 			$data['friends'] = array();
 			$sql = "SELECT * FROM users WHERE username = '{$input['data']['user']}'";
 			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				if(mysqli_num_rows($result) == 0){
@@ -217,14 +225,16 @@ function process($input){
 			}
 			$sql = "SELECT * FROM following WHERE user = '{$input['data']['user']}'";
 			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-					$data['shows'][] = getShow($db, $row['showID']);
+					$data['shows'][] = array('name'=>getShow($db, $row['showID']), 'id'=> $row['showID']);
 				}
 				
 				$sql = "SELECT * FROM friends WHERE (user = '{$input['data']['user']}' or friend = '{$input['data']['user']}') and accepted = true";
 				if(!($result = mysqli_query($db, $sql))){
+					error("ERROR: ".$sql." failed to execute");
 					return 1;
 				}else{
 					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
@@ -254,6 +264,7 @@ function process($input){
 			$sql = "INSERT INTO friends (user, friend, accepted) values ('{$input['data']['requestor']}', '{$input['data']['user']}', false)";
 			echo $sql;
 			if(!mysqli_query($db, $sql)){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				return 0;
@@ -267,6 +278,7 @@ function process($input){
 			}
 			$sql = "DELETE FROM friends WHERE (user = '{$input['data']['user']}' or friend = '{$input['data']['user']}') and (user = '{$input['data']['requestor']}' or friend = '{$input['data']['requestor']}')";
 			if(!mysqli_query($db, $sql)){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				return 0;
@@ -278,6 +290,7 @@ function process($input){
 			$sql = "SELECT * FROM friends WHERE (user = '{$input['data']}' or friend = '{$input['data']}') and accepted = true";
 			echo $sql;
 			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
@@ -291,6 +304,7 @@ function process($input){
 			$sql = "SELECT * FROM friends WHERE  friend = '{$input['data']}' and accepted = false";
 			echo $sql;
 			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
 				return 1;
 			}else{
 				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
@@ -310,6 +324,7 @@ function process($input){
 				if(mysqli_query($db, $sql)){
 					return 0;
 				}else{
+					error("ERROR: ".$sql." failed to execute");
 					return 1;
 				}
 			}else if($input['data']['action'] == 'deny'){
@@ -317,8 +332,179 @@ function process($input){
 				if(mysqli_query($db, $sql)){
 					return 0;
 				}else{
+					error("ERROR: ".$sql." failed to execute");
 					return 1;
 				}
+			}
+		case "getSchedule":
+			//get shows users follow
+			$sql = "SELECT showID FROM following WHERE user = '{$input['data']}'";
+			$following = array();
+			$data = array();
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if((mysqli_num_rows($result) != 0)){
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+					$following[] = $row['showID'];
+				}
+				$start = date('Y-m-d', strtotime('-'.date('w').' days'))." 00:00:00";
+				$tillEnd = 6 - date('w');
+				$end = date('Y-m-d', strtotime('+'.$tillEnd.' days'))." 23:59:59";
+				foreach($following as $id){
+					$sql = "SELECT * FROM episodes WHERE airdate >= '$start' and airdate <= '$end' and showID = $id";
+					echo $sql;
+					if(!($result = mysqli_query($db, $sql))){
+						error("ERROR: ".$sql." failed to execute");
+						return 1;
+					}
+					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+						$row['name'] = getShow($db, $row['showID']);
+						$data[] = $row;		
+					}
+				}
+			}
+			return $data;
+		case "getShow":
+			$sql = "SELECT * FROM shows WHERE showID = {$input['data']}";
+			$data = array();
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if((mysqli_num_rows($result) == 0)){
+				return 2;
+			}
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				$data['show'] = $row;
+			}
+			$sql = "SELECT * FROM episodes WHERE showID = {$input['data']}";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				$data['episodes'][] = $row;
+			}
+			return $data;
+		case "likeShow":
+			//want to verify show exists before allowing user to like it
+			$sql = "SELECT * FROM shows WHERE showID = {$input['data']['showID']}";
+			if(!($result = mysqli_query($db, $sql))){
+				//error happened here
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) == 0){
+				return 2;
+			}
+			$response = process(array('type'=>'isLiked', 'data'=> array('user'=> $input['data']['user'], 'showID'=> $input['data']['showID'])));
+			if($response === 1){
+				//error happened here
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}else if($response === true){
+				//user already likes show
+				return 2;
+			}
+			$sql = "INSERT INTO liked (user, showID) values ('{$input['data']['user']}', {$input['data']['showID']})";
+			if(!(mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			return 0;
+		case "unlikeShow":
+			//check to see if show exists	
+			$sql = "SELECT * FROM shows WHERE showID = {$input['data']['showID']}";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) == 0){
+				return 2;
+			}
+			//check to see if user likes the show
+			$response = process(array('type'=>'isLiked', 'data'=> array('user'=> $input['data']['user'], 'showID'=> $input['data']['showID'])));
+			if($response === 1){
+				return 1;
+			}else if($response === false){
+				//user doesn't like the show
+				return 2;
+			}
+			$sql = "DELETE FROM liked WHERE user = '{$input['data']['user']}' and showID = {$input['data']['showID']}";
+			if(!(mysqli_query($db, $sql))){
+				return 1;
+			}
+			return 0;
+		case "followShow":
+			$sql = "SELECT * FROM shows WHERE showID = {$input['data']['showID']}";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) == 0){
+				return 2;
+			}
+			$response = process(array('type'=>'isFollowing', 'data'=> array('user'=> $input['data']['user'], 'showID'=> $input['data']['showID'])));
+			if($response === 1){
+				return 1;
+			}else if($response === true){
+				return 2;
+			}
+			$sql = "INSERT INTO following (user, showID) values ('{$input['data']['user']}', {$input['data']['showID']})";
+			if(!(mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			return 0;
+		case "unfollowShow":
+			$sql = "SELECT * FROM shows WHERE showID = {$input['data']['showID']}";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) == 0){
+				return 2;
+			}
+			$response = process(array('type'=>'isFollowing', 'data'=> array('user'=> $input['data']['user'], 'showID'=> $input['data']['showID'])));
+			if($response === 1){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}else if($response === false){
+				return 2;
+			}
+			$sql = "DELETE FROM following WHERE user = '{$input['data']['user']}' and showID = {$input['data']['showID']}";
+			echo $sql;
+			if(!(mysqli_query($db, $sql))){
+				echo 'oops';
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			return 0;
+		case "isLiked":
+			$sql = "SELECT * FROM liked WHERE showID = {$input['data']['showID']} and user = '{$input['data']['user']}'";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) != 0){
+				//user doesn't like show already
+				return true;
+			}else{
+				return false;
+			}
+		case "isFollowing":
+			$sql = "SELECT * FROM following WHERE showID = {$input['data']['showID']} and user = '{$input['data']['user']}'";
+			if(!($result = mysqli_query($db, $sql))){
+				error("ERROR: ".$sql." failed to execute");
+				return 1;
+			}
+			if(mysqli_num_rows($result) != 0){
+				//user doesn't like show already
+				return true;
+			}else{
+				return false;
 			}
 	}
 }
