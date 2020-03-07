@@ -1,7 +1,14 @@
 <?php
 include ('functions.php');
-$message = sendRabit(array('type'=> 'getSchedule','data'=>$user));
-$email - sendRabbit('type'=> 'email', 'data'=>$user));
+$users= snedRabbit('getUsers');
+foreach($users as $user){
+	$following = sendRabbit('getSchedule', $user);
+	$shows = "";
+	foreach($follwing as $show){
+		$shows = $shows.$show[show]."Airing on".$show[airdate]."\n";
+	}
+	$message = $user."!\n You have shows airing soon!\n\n".$shows;
+
 $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465))
 	->setUsersname('njitvemailer@gmail.com')
 	->setPassword('^0*1v4N0Zp')
@@ -13,4 +20,5 @@ $body = (new Swift_Message('Subject'))
 	->setBody($message)
 	;
 $result= $mailer->send($body);
+}
 ?>
