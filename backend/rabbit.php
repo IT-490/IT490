@@ -20,6 +20,18 @@ function getShow($db, $showID){
 	}
 }
 
+function sanatize($db, $data){
+	$keys = array_keys($data);
+	foreach($keys as $key){
+		if(gettype($data[$key]) == 'array'){
+			$data[$key] = sanatize($db, $data[$key]);
+		}else{
+			$data[$key] = mysqli_real_escape_string($db, $data[$key]);
+		}
+	}
+	return $data;
+}
+
 function isFriend($db, $user, $friend){
 	$sql = "SELECT * FROM friends WHERE (user = '$user' or friend = '$user') and (user = '$friend' or friend = '$friend') and accepted = true";
 	if(!($result = mysqli_query($db, $sql))){
@@ -56,6 +68,7 @@ function process($input){
 	}
 	mysqli_select_db($db, $project);
 	var_dump($input);
+	$input['data'] = sanatize($db, $input['data']);
 	switch($input['type']){
 		case "login":
 			$sql = "Select * FROM users WHERE username = '{$input['data']['username']}'";
