@@ -1,8 +1,8 @@
 <?php
 include ('functions.php');
-$users= snedRabbit('getUsers');
+$users= sendRabbit(array('type'=>'getUsers'));
 foreach($users as $user){
-	$following = sendRabbit('getSchedule', $user);
+	$following = sendRabbit(array('type'=>'getSchedule','data'=> $user));
 	$shows = "";
 	foreach($follwing as $show){
 		$shows = $shows.$show[show]."Airing on".$show[airdate]."\n";
