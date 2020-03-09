@@ -21,12 +21,16 @@ function getShow($db, $showID){
 }
 
 function sanatize($db, $data){
-	$keys = array_keys($data);
-	foreach($keys as $key){
-		if(gettype($data[$key]) == 'array'){
-			$data[$key] = sanatize($db, $data[$key]);
-		}else{
-			$data[$key] = mysqli_real_escape_string($db, $data[$key]);
+	if(gettype($data) != 'array'){
+		$data = mysqli_real_escape_string($db, $data);
+	}else{
+		$keys = array_keys($data);
+		foreach($keys as $key){
+			if(gettype($data[$key]) != 'array'){
+				$data[$key] = mysqli_real_escape_string($db, $data[$key]);
+			}else{
+				$data[$key] = sanatize2($db, $data[$key]);
+			}
 		}
 	}
 	return $data;
@@ -394,7 +398,8 @@ function process($input){
 			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 				$data['show'] = $row;
 			}
-			$sql = "SELECT * FROM episodes WHERE showID = {$input['data']}";
+			$sql = "SELECT * FROM episodes WHERE showID = {$input['data']} and airdate > '" . date('Y-m-d H:i:s') . "'";
+			echo $sql;
 			if(!($result = mysqli_query($db, $sql))){
 				error("ERROR: ".$sql." failed to execute");
 				return 1;
@@ -529,16 +534,33 @@ function process($input){
 			}
 			if(mysqli_num_rows($result) == 0){
 				$response = sendAPI(array('type'=>'search', 'data'=> $input['data']));
-				foreach($response as $row){
-					if(empty($row['airtime'])){
-						//add just the show can copy code from above
-					}else{
-						//call update bit
+				$response = sanatize($db, $response);
+				//check to see if any shows were actually returned
+				if(!(empty($response))){
+					//if shows were returned loop through each show and append a value to the end of the insert statement
+					$sql = "INSERT INTO shows (name, network, poster) values ";
+					foreach($response as $show){
+						$sql .= "('{$show['name']}', '{$show['network']}', '{$show['poster']}'), ";
 					}
+					if(!(mysqli_query($db, $sql))){
+						error("ERROR: ".$sql." failed to execute");
+						return 1;
+					}else{
+						return $response;	
+					}
+				}else{
+					//if no shows were returned send return code 2
+					return 2;
 				}
+			}else{
+				$shows = array();
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+					$shows[] = $row;
+				}
+				return $shows;
 			}
 		case "getUsers":
-			$sql = "SELECT name, email FROM users";
+			$sql = "SELECT username, email FROM users";
 			if(!($result = mysqli_query($db, $sql))){
 				error("ERROR: ".$sql." failed to execute");
 				return 1;
