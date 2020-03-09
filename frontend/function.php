@@ -8,6 +8,8 @@ function sendRabbit($data) {
     $sampleShows = [
         [
             'id' => 1,
+            'liked' => false, // One of true, false, or null
+            'following' => false, // One of true, false, or null
             'name' => 'Show One',
             'genre' => 'Genre One',
             'upcoming_episodes' => [
@@ -18,6 +20,8 @@ function sendRabbit($data) {
             'poster_graphic' => 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg',
         ], [
             'id' => 2,
+            'liked' => false,
+            'following' => false,
             'name' => 'Show Two',
             'genre' => 'Genre One',
             'upcoming_episodes' => [
@@ -28,6 +32,8 @@ function sendRabbit($data) {
             'poster_graphic' => 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg',
         ], [
             'id' => 3,
+            'liked' => false,
+            'following' => false,
             'name' => 'Show Three',
             'genre' => 'Genre One',
             'upcoming_episodes' => [
@@ -56,21 +62,45 @@ function sendRabbit($data) {
     if($data['action'] == 'get_shows')
         return $sampleShows;
 
+    if($data['action'] == 'sanitize')
+        return trim($data['data']);
+
     if($data['action'] == 'like_show')
+        return ['success' => true];
+
+    if($data['action'] == 'unlike_show')
         return ['success' => true];
 
     if($data['action'] == 'follow_show') {
         // Send email of show's upcoming episode
         foreach ($sampleShows as $sampleShow) {
             if ($sampleShow['id'] == $data['show_id']) {
-                mail('example@example.com', 'You Followed a Show. ', 'You follow ' . $sampleShow['name'] . '. It will be airing on ' . $sampleShow['upcoming_episodes'][0]['date'] . ', ' . $sampleShow['upcoming_episodes'][0]['day'] . ', ' . $sampleShow['upcoming_episodes'][0]['time'] . ', and on ' . $sampleShow['upcoming_episodes'][0]['channel'] . '.');
+                mail('example@example.com', 'You Followed a Show', 'You follow ' . $sampleShow['name'] . '. It will be airing on ' . $sampleShow['upcoming_episodes'][0]['date'] . ', ' . $sampleShow['upcoming_episodes'][0]['day'] . ', ' . $sampleShow['upcoming_episodes'][0]['time'] . ', and on ' . $sampleShow['upcoming_episodes'][0]['channel'] . '.');
             }
         }
 
         return ['success' => true];
     }
 
+    if($data['action'] == 'unfollow_show')
+        return ['success' => true];
+
     if($data['action'] == 'get_schedule')
         return $sampleSchedule;
 
+    if($data['action'] == 'search') {
+        $searchResults = [];
+        foreach ($sampleShows as $show) {
+            if(stristr($show['name'], $data['data']))
+                $searchResults[] = ['showID' => $show['id'], 'name' => $show['name'], 'network' => $show['upcoming_episodes'][0]['channel']];
+        }
+        return $searchResults;
+    }
+
+}
+
+function sanitize($data) {
+    $data = trim($data);
+    $data = sendRabbit(['action' => 'sanitize', 'data' => $data]);
+    return $data;
 }

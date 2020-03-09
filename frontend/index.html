@@ -18,31 +18,49 @@
 </head>
 <body>
 
-<nav class="no-session navbar navbar-expand-sm bg-light navbar-light justify-content-end">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="login.html"><button type="button" class="btn btn-primary">Login</button></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="register.html"><button type="button" class="btn btn-success">Register</button></a>
-        </li>
-    </ul>
+<nav class="no-session navbar navbar-expand-sm bg-light navbar-light">
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"><span class="navbar-toggler-icon"></span></button>
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <form class="form-inline" method="get" action="/search.php">
+            <input name="term" class="form-control mr-sm-2" type="text" placeholder=" Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="login.html"><button type="button" class="btn btn-primary">Login</button></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="register.html"><button type="button" class="btn btn-success">Register</button></a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
-<nav style="display: none" class="has-session navbar navbar-expand-sm bg-light navbar-light justify-content-end">
-    <a id="welcome-message" class="navbar-text mr-3"></a>
+<nav style="display: none" class="has-session navbar navbar-expand-sm bg-light navbar-light">
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar2"><span class="navbar-toggler-icon"></span></button>
 
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <button id="logout-button" type="button" class="btn btn-danger">Logout</button>
-        </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar2">
+        <form class="form-inline" method="get" action="/search.php">
+            <input name="term" class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+
+        <span id="welcome-message" class="navbar-text ml-auto mr-3"></span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <button id="logout-button" type="button" class="btn btn-danger">Logout</button>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <br><h1 align="center">Home</h1>
 
-
 <script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
 <script>
     $(window).on('load', function() {
 
@@ -54,12 +72,10 @@
             .done(function(data) {
                 if(data.set) { // A Session exists. Switch to the signed-in version
                     $("#welcome-message").text("Welcome, " + data.username + "!");
-                    $("#welcome-message").attr("href", "./profile.php");
-		    $(".no-session").hide();
+                    $(".no-session").hide();
                     $(".has-session").show();
                 } else { // No session. Switch to the signed-out version
                     $("#welcome-message").text("");
-                    $("#welcome-message").attr("href", "");
                     $(".has-session").hide();
                     $(".no-session").show();
                 }
@@ -71,19 +87,32 @@
 
     $(document).ready(function() {
 
+        // Get all shows. Just for the link to their individual pages
+        $.ajax({
+            url: 'shows.php',
+            type: 'POST',
+            data: { "ajax": true, "action": "get_shows" },
+            dataType: 'json'
+        })
+            .done(function(data) {
+                for (let show of data)
+                    $("#shows-list").append("<a href='shows.php?id=" + show.id + "' class='list-group-item'>" + show.name + "</a>");
+            });
+
         // User clicked on the "Logout" button. Notify the php script, and switch to the signed-out version
         $("#logout-button").on("click", function(e) {
             $.ajax({
                 url: 'logout.php', // The php script that clears the session
                 type: 'POST',
+                dataType: 'json'
             })
                 .done(function(data) {
                     $("#welcome-message").text("");
                     $(".has-session").hide();
                     $(".no-session").show();
                 })
-                .fail(function(e, x) {
-                    alert('An error occurred. Try again.' + e + x);
+                .fail(function() {
+                    alert('An error occurred. Try again.');
                 });
 
         });
