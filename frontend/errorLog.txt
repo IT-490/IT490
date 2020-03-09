@@ -1,1 +1,10 @@
-testERROR: SELECT * FROM shows WHERE showID =  failed to executeERROR: SELECT * FROM liked WHERE showID =  and user = '[empty response]' failed to executeERROR: SELECT * FROM following WHERE showID =  and user = '[empty response]' failed to executeERROR: SELECT * FROM shows WHERE showID = [empty response] failed to executeERROR: SELECT * FROM liked WHERE showID = [empty response] and user = '[empty response]' failed to executeERROR: SELECT * FROM liked WHERE showID = [empty response] and user = '[empty response]' failed to executeERROR: SELECT * FROM following WHERE showID = [empty response] and user = '[empty response]' failed to executeERROR: SELECT * FROM following WHERE showID = [empty response] and user = '[empty response]' failed to executetesttesttesttestERROR: SELECT * FROM shows WHERE showID =  failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasdasdd failed to execute

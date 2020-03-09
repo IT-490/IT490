@@ -15,11 +15,11 @@ require_once('rabbitMQLib.inc');
 		return $response;	
 	}
 
-	function sanatize($data){
-		$data = trim($data);
-		$data = sendRabbit(array('type' => 'sanatize', 'data' => $data));
-		return $data;
-	}
+//	function sanatize($data){
+//		$data = trim($data);
+//		$data = sendRabbit(array('type' => 'sanatize', 'data' => $data));
+//		return $data;
+//	}
 	function sendError($data){
 		$client = new rabbitMQClient("rabbitMQ.ini", "log");
 		$response = $client->send_request($data);

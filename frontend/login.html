@@ -87,7 +87,7 @@
     function submitLoginForm() {
         let username = $('#username').val();
         let password = $('#password').val();
-
+	alert(username);
         $.ajax({
             url: 'login.php',
             type: 'POST',
