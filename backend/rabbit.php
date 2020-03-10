@@ -543,11 +543,11 @@ function process($input){
 					foreach($response as $show){
 						//check to see if show already exists to avoid :w
 						$sql = "SELECT * FROM shows WHERE name = '{$show['name']}'";
-						if(!($result = mysqli_query($dbm$sql))){
+						if(!($result = mysqli_query($db, $sql))){
 							error("ERROR: ".$sql." failed to execute");
 							return 1;
 						}
-						if(mysqli_num_rows($response) == 0){
+						if(mysqli_num_rows($result) == 0){
 							$sql = "INSERT INTO shows (name, network, poster) values ('{$show['name']}', '{$show['network']}', '{$show['poster']}')";
 							if(!(mysqli_query($db, $sql))){
 								echo "broke";
@@ -560,7 +560,9 @@ function process($input){
 											
 							}
 						}else{
-							$shows[] = $show;
+							while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+								$shows[] = $row;
+							}
 						}
 					}
 					return $shows;
