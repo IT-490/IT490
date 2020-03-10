@@ -177,7 +177,7 @@ function process($input){
 			if(mysqli_query($db,$sql)){
 				$id = mysqli_insert_id($db);
 				$response = process(array('type'=>'newPost', 'data'=> array('content'=> $input['data']['content'], 'user'=> $input['data']['user'], 'id'=> $id)));
-				if($response == 0){
+				if($response === true){
 					return $id;
 				}else{
 					return 1;
@@ -198,7 +198,7 @@ function process($input){
 					return 0;
 				}else{
 					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-						
+						$row['content'] = stripslashes($row['content']);
 						$data[] = $row;
 					}
 					return $data;
