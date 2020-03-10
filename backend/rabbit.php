@@ -541,16 +541,26 @@ function process($input){
 					//if shows were returned loop through each show and append a value to the end of the insert statement
 					//TODO optimize this code with a multiquery
 					foreach($response as $show){
-						$sql = "INSERT INTO shows (name, network, poster) values ('{$show['name']}', '{$show['network']}', '{$show['poster']}')";
-						if(!(mysqli_query($db, $sql))){
-							echo "broke";
+						//check to see if show already exists to avoid :w
+						$sql = "SELECT * FROM shows WHERE name = '{$show['name']}'";
+						if(!($result = mysqli_query($dbm$sql))){
 							error("ERROR: ".$sql." failed to execute");
 							return 1;
+						}
+						if(mysqli_num_rows($response) == 0){
+							$sql = "INSERT INTO shows (name, network, poster) values ('{$show['name']}', '{$show['network']}', '{$show['poster']}')";
+							if(!(mysqli_query($db, $sql))){
+								echo "broke";
+								error("ERROR: ".$sql." failed to execute");
+								return 1;
+							}else{
+								$id = mysqli_insert_id($db);
+								$show['showID'] = $id;
+								$shows[] = $show;
+											
+							}
 						}else{
-							$id = mysqli_insert_id($db);
-							$show['showID'] = $id;
 							$shows[] = $show;
-										
 						}
 					}
 					return $shows;
