@@ -41,7 +41,7 @@ if(isset($_REQUEST['ajax'])) {
 
 <div class="container mt-4 mb-4">
 
-    <?php if(count($response) > 0) { ?>
+    <?php if($response !== 2) { ?>
         <h2 class="text-center">Search Results</h2>
         <hr>
 
