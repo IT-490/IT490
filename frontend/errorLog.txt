@@ -8,3 +8,21 @@ DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE po
 DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
 DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasd failed to execute
 DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asdasdasdd failed to execute
+DB: ERROR: SELECT * FROM shows WHERE showID =  failed to execute
+DB: ERROR: SELECT * FROM liked WHERE showID =  and user = 'steve' failed to execute
+DB: ERROR: SELECT * FROM following WHERE showID =  and user = 'steve' failed to execute
+DB: ERROR: SELECT name, email FROM users failed to execute
+DB: ERROR: SELECT name, email FROM users failed to execute
+DB: ERROR: SELECT name, email FROM users failed to execute
+DB: ERROR: SELECT name, email FROM users failed to execute
+DB: ERROR: SELECT * FROM shows WHERE showID =  failed to execute
+DB: ERROR: SELECT * FROM liked WHERE showID =  and user = 'george' failed to execute
+DB: ERROR: SELECT * FROM following WHERE showID =  and user = 'george' failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 610 where airdate > 2020-03-09 00:42:43 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 610 where airdate > 2020-03-09 00:43:06 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 600 where airdate > 2020-03-09 00:43:11 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 458 where airdate > 2020-03-09 00:43:17 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 458, airdate > 2020-03-09 00:43:59 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 458, airdate > 2020-03-09 00:44:00 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 601, airdate > 2020-03-09 00:44:05 failed to execute
+DB: ERROR: SELECT * FROM episodes WHERE showID = 601, airdate > 2020-03-09 00:44:36 failed to execute

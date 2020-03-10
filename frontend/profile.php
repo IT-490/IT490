@@ -12,17 +12,12 @@ if(isset($_REQUEST['ajax'])){
 	exit();
 }
 include('./forums/header.php');
-<<<<<<< Updated upstream
 if(empty($_REQUEST['user']) && isset($_SESSION['user'])){
-	$user = sanatize($_SESSION['user']);
+	$user = $_SESSION['user'];
 }else{
-	$user = sanatize($_REQUEST['user']);
+	$user = $_REQUEST['user'];
 }
-$requestor = sanatize($_SESSION['user']);
-=======
-$user =$_REQUEST['user'];
-$requestor =$_SESSION['user'];
->>>>>>> Stashed changes
+$requestor = $_SESSION['user'];
 $data = sendRabbit(array('type'=> 'getProfile', 'data'=> array('user'=> $user, 'requestor'=> $requestor)));
 echo "<div class='container mt-4 mb-4 '>";
 if($data == 2){
@@ -57,7 +52,9 @@ if($data == 2){
 		</script>
 		";
 	}else if($user == $requestor && isset($_SESSION['user'])){
-		echo "<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>";
+		echo "
+		<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>
+		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>";
 	}
 	echo "		
 		<br><br>

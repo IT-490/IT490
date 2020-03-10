@@ -5,10 +5,10 @@ if(empty($_SESSION['user'])){
 	header('location: ./threads.php?id='.$_REQUEST['id']);
 }else{
 	if(isset($_REQUEST['ajax'])){
-		$content = sanatize($_REQUEST['content']);
-		$subject = sanatize($_REQUEST['subject']);
-		$user = sanatize($_SESSION['user']);
-		$show = sanatize($_REQUEST['show']);
+		$content = $_REQUEST['content'];
+		$subject = $_REQUEST['subject'];
+		$user = $_SESSION['user'];
+		$show = $_REQUEST['show'];
 		if(empty($subject) || empty($content)){
 			echo false;
 		}else{
@@ -17,7 +17,7 @@ if(empty($_SESSION['user'])){
 		exit();
 	}else{
 		include('header.php');
-		$id = sanatize($_REQUEST['id']);
+		$id = $_REQUEST['id'];
 		echo '<div class="container mw-75 mt-4 mb-4">';
 		echo '<form id="thread-form">';
 		echo '<label for="subject">Subject</label>';

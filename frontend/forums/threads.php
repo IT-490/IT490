@@ -4,7 +4,7 @@ if(isset($_REQUEST['ajax'])){
 	//add error handling here
 }else{
 	session_start();
-	$id = sanatize($_REQUEST['id']);
+	$id = $_REQUEST['id'];
 	$data = sendRabbit(array('type'=> 'getThreads', 'data'=> $id));
 	include('header.php');
 	echo '<div class="container mt-4 mb-4 mw-100">';

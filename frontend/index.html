@@ -48,7 +48,7 @@
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
 
-        <span id="welcome-message" class="navbar-text ml-auto mr-3"></span>
+        <a id="welcome-message" class="navbar-text ml-auto mr-3"></a>
         <ul class="navbar-nav">
             <li class="nav-item">
                 <button id="logout-button" type="button" class="btn btn-danger">Logout</button>
@@ -56,9 +56,9 @@
         </ul>
     </div>
 </nav>
-
+<div class="container mt-4 mb-4 mw-100">
 <br><h1 align="center">Home</h1>
-
+</div>
 <script src="jquery.min.js"></script>
 <script src="bootstrap.min.js"></script>
 <script>
@@ -72,7 +72,8 @@
             .done(function(data) {
                 if(data.set) { // A Session exists. Switch to the signed-in version
                     $("#welcome-message").text("Welcome, " + data.username + "!");
-                    $(".no-session").hide();
+                    $("#welcome-message").attr("href", "./profile.php");
+		    $(".no-session").hide();
                     $(".has-session").show();
                 } else { // No session. Switch to the signed-out version
                     $("#welcome-message").text("");
@@ -86,19 +87,7 @@
     });
 
     $(document).ready(function() {
-
         // Get all shows. Just for the link to their individual pages
-        $.ajax({
-            url: 'shows.php',
-            type: 'POST',
-            data: { "ajax": true, "action": "get_shows" },
-            dataType: 'json'
-        })
-            .done(function(data) {
-                for (let show of data)
-                    $("#shows-list").append("<a href='shows.php?id=" + show.id + "' class='list-group-item'>" + show.name + "</a>");
-            });
-
         // User clicked on the "Logout" button. Notify the php script, and switch to the signed-out version
         $("#logout-button").on("click", function(e) {
             $.ajax({

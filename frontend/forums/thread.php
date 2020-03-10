@@ -3,9 +3,9 @@ include('../functions.php');
 session_start();
 if(isset($_REQUEST['ajax'])){
 	//add error handling here\
-	$user = sanatize($_SESSION['user']);
-	$content = sanatize($_REQUEST['content']);
-	$id = sanatize($_REQUEST['id']);
+	$user = $_SESSION['user'];
+	$content = $_REQUEST['content'];
+	$id = $_REQUEST['id'];
 	if(empty($content) or empty($id)){
 		echo false;
 	}else{
@@ -14,8 +14,8 @@ if(isset($_REQUEST['ajax'])){
 	}
 	exit();
 }
-	$id = sanatize($_REQUEST['id']);
-	$cat = sanatize($_REQUEST['cat']);
+	$id = $_REQUEST['id'];
+	$cat = $_REQUEST['cat'];
 	$rows = sendRabbit(array('type'=> 'getPosts', 'data'=> $id));
 	include('header.php');
 	echo '<div class="container mt-4 mb-4 mw-100">';

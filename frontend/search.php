@@ -1,12 +1,11 @@
 <?php
 
-require_once('function.php');
+require_once('functions.php');
 
-$term =  sanitize($_REQUEST['term']);
-$data = ['action' => 'search', 'data' => $term];
+$term =  $_REQUEST['term'];
+$data = ['type' => 'search', 'data' => $term];
 
 $response = sendRabbit($data);
-
 // If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {
     echo json_encode($response);
@@ -36,7 +35,7 @@ if(isset($_REQUEST['ajax'])) {
 
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
     <a class="navbar-brand" href="index.html">Home</a>
-    <span id="welcome-message" class="ml-auto navbar-text mr-3"></span>
+    <a id="welcome-message" class="ml-auto navbar-text mr-3"></a>
 </nav>
 
 
@@ -57,7 +56,7 @@ if(isset($_REQUEST['ajax'])) {
                 <tbody>
                     <?php foreach ($response as $show) { ?>
                         <tr>
-                            <td><a href="/shows.php?id=<?php echo $show['showID'] ?>"><?php echo $show['name']?></a></td>
+                            <td><a href="./shows.php?id=<?php echo $show['showID'] ?>"><?php echo $show['name']?></a></td>
                             <td><?php echo $show['network']?></td>
                         </tr>
                     <?php } ?>
@@ -82,7 +81,8 @@ if(isset($_REQUEST['ajax'])) {
         }).done(function(data) {
             if(data.set) { // A Session exists. Switch to the signed-in version
                 $("#welcome-message").text("Welcome, " + data.username + "!");
-                $(".no-session").hide();
+		$("#welcome-message").attr("href", "./profile.php");
+		$(".no-session").hide();
                 $(".has-session").show();
             } else {
 

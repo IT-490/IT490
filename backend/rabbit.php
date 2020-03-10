@@ -29,7 +29,7 @@ function sanatize($db, $data){
 			if(gettype($data[$key]) != 'array'){
 				$data[$key] = mysqli_real_escape_string($db, $data[$key]);
 			}else{
-				$data[$key] = sanatize2($db, $data[$key]);
+				$data[$key] = sanatize($db, $data[$key]);
 			}
 		}
 	}
@@ -535,28 +535,35 @@ function process($input){
 			if(mysqli_num_rows($result) == 0){
 				$response = sendAPI(array('type'=>'search', 'data'=> $input['data']));
 				$response = sanatize($db, $response);
+				$shows = array();
 				//check to see if any shows were actually returned
 				if(!(empty($response))){
 					//if shows were returned loop through each show and append a value to the end of the insert statement
-					$sql = "INSERT INTO shows (name, network, poster) values ";
+					//TODO optimize this code with a multiquery
 					foreach($response as $show){
-						$sql .= "('{$show['name']}', '{$show['network']}', '{$show['poster']}'), ";
+						$sql = "INSERT INTO shows (name, network, poster) values ('{$show['name']}', '{$show['network']}', '{$show['poster']}')";
+						if(!(mysqli_query($db, $sql))){
+							echo "broke";
+							error("ERROR: ".$sql." failed to execute");
+							return 1;
+						}else{
+							$id = mysqli_insert_id($db);
+							$show['showID'] = $id;
+							$shows[] = $show;
+										
+						}
 					}
-					if(!(mysqli_query($db, $sql))){
-						error("ERROR: ".$sql." failed to execute");
-						return 1;
-					}else{
-						return $response;	
-					}
+					return $shows;
 				}else{
 					//if no shows were returned send return code 2
 					return 2;
 				}
 			}else{
-				$shows = array();
 				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 					$shows[] = $row;
 				}
+				echo "returning ".count($shows)." results";
+				var_dump($shows);
 				return $shows;
 			}
 		case "getUsers":
@@ -569,6 +576,7 @@ function process($input){
 			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 				$data[] = $row;
 			}
+			var_dump($data);
 			return $data;
 	}
 }

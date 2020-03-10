@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 include('../frontend/functions.php');
 $shows = array();
@@ -12,11 +13,11 @@ for($i = 0; $i < 7; $i++){
 	$response = json_decode($response, TRUE);
 	foreach($response as $show){
 		$data = array();
-		$data['name'] = sanatize($show['name']);
-		$data['show'] = sanatize($show['show']['name']);
-		$data['network'] = sanatize($show['show']['network']['name']);
-		$data['airdate'] = sanatize($show['airdate']." ".$show['airtime'].":00");
-		$data['poster'] = sanatize($show['show']['image']['original']);
+		$data['name'] = $show['name'];
+		$data['show'] = $show['show']['name'];
+		$data['network'] = $show['show']['network']['name'];
+		$data['airdate'] = $show['airdate']." ".$show['airtime'].":00";
+		$data['poster'] = $show['show']['image']['original'];
 
 		$shows[] = $data;
 	}
