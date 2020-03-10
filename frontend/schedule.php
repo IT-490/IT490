@@ -2,7 +2,7 @@
 
 require_once('functions.php');
 session_start();
-$user = sanatize($_SESSION['user']);
+$user =$_SESSION['user'];
 $response = sendRabbit(array('type'=> 'getSchedule', 'data'=> $user));
 $data = array('Sunday'=> array('name'=> 'Sunday'), 'Monday'=> array('name'=> 'Monday'), 'Tuesday'=> array('name'=> 'Tuesday'), 'Wednesday'=> array('name'=> 'Wednesday'), 'Thursday'=> array('name'=>'Thursday'), 'Friday'=> array('name'=>'Friday'),'Saturday'=> array('name'=>'Saturday'));
 

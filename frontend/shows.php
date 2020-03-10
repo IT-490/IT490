@@ -4,19 +4,19 @@ require_once('functions.php');
 
 // The requested show id. Default is 1
 session_start();
-$id = sanatize($_REQUEST['id']);
+$id =$_REQUEST['id'];
 $response = sendRabbit(array('type'=> 'getShow', 'data'=> $id));
 if(isset($_SESSION['user'])){
-	$user = sanatize($_SESSION['user']);
+	$user =$_SESSION['user'];
 	$liked = sendRabbit(array('type'=> 'isLiked', 'data'=> array('user'=> $user, 'showID'=> $id)));
 	$followed = sendRabbit(array('type'=> 'isFollowing', 'data'=> array('user'=> $user, 'showID'=> $id)));
 }
 		// If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {
-	$id = sanatize($_REQUEST['id']);
+	$id =$_REQUEST['id'];
 	session_start();
 	if(isset($_SESSION['user'])){
-		$user = sanatize($_SESSION['user']);
+		$user =$_SESSION['user'];
 	}else{
 		return 1;
 	}

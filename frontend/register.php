@@ -1,10 +1,10 @@
 <?php
 include("functions.php");
-$username = sanatize($_REQUEST['name']);
-$password = sanatize($_REQUEST['pass']);
-$firstname = sanatize($_REQUEST['fname']);
-$lastname = sanatize($_REQUEST['lname']);
-$email = sanatize($_REQUEST['email']);
+$username =$_REQUEST['name'];
+$password =$_REQUEST['pass'];
+$firstname =$_REQUEST['fname'];
+$lastname =$_REQUEST['lname'];
+$email =$_REQUEST['email'];
 $errflag = False; 
 if(empty($username)){
 	$errflag = True;

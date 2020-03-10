@@ -2,8 +2,8 @@
 include('functions.php');
 session_start();
 if(isset($_REQUEST['ajax'])){
-	$user = sanatize($_REQUEST['user']);
-	$requestor = sanatize($_SESSION['user']);
+	$user =$_REQUEST['user'];
+	$requestor =$_SESSION['user'];
 	if($_REQUEST['action'] == 'add'){
 		echo sendRabbit(array('type'=> 'addFriend', 'data'=> array('user'=> $user, 'requestor'=> $requestor)));
 	}else if($_REQUEST['action'] == 'remove'){
@@ -12,12 +12,17 @@ if(isset($_REQUEST['ajax'])){
 	exit();
 }
 include('./forums/header.php');
+<<<<<<< Updated upstream
 if(empty($_REQUEST['user']) && isset($_SESSION['user'])){
 	$user = sanatize($_SESSION['user']);
 }else{
 	$user = sanatize($_REQUEST['user']);
 }
 $requestor = sanatize($_SESSION['user']);
+=======
+$user =$_REQUEST['user'];
+$requestor =$_SESSION['user'];
+>>>>>>> Stashed changes
 $data = sendRabbit(array('type'=> 'getProfile', 'data'=> array('user'=> $user, 'requestor'=> $requestor)));
 echo "<div class='container mt-4 mb-4 '>";
 if($data == 2){

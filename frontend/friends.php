@@ -2,9 +2,9 @@
 include('functions.php');
 session_start();
 if(isset($_REQUEST['ajax'])){
-	$requestor = sanatize($_REQUEST['user']);
-	$user = sanatize($_SESSION['user']);
-	$action = sanatize($_REQUEST['action']);
+	$requestor =$_REQUEST['user'];
+	$user =$_SESSION['user'];
+	$action =$_REQUEST['action'];
 	echo sendRabbit(array('type'=>'requestResponse', 'data'=> array('requestor'=> $requestor, 'user'=> $user, 'action'=>$action)));
 	exit();
 }
@@ -13,7 +13,7 @@ if(empty($_SESSION['user'])){
 	exit();
 }
 include('./forums/header.php');
-$user = sanatize($_SESSION['user']);
+$user =$_SESSION['user'];
 $data = sendRabbit(array('type'=> 'getFriends', 'data'=> $user));
 echo "
 <div class='container mt-4 mb-4'>
