@@ -177,7 +177,7 @@ function process($input){
 			if(mysqli_query($db,$sql)){
 				$id = mysqli_insert_id($db);
 				$response = process(array('type'=>'newPost', 'data'=> array('content'=> $input['data']['content'], 'user'=> $input['data']['user'], 'id'=> $id)));
-				if($response === true){
+				if($response == 0){
 					return $id;
 				}else{
 					return 1;
