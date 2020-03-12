@@ -43,7 +43,7 @@ if(empty($_SESSION['user'])){
 				data: {"ajax": "true", "subject": subject, "content": content, "show": '.$id.'},
 				datatype: "text"
 				}).done(function(data){
-					if(data == false){
+					if(data === false){
 						alert("ERROR: invalid data");
 					}else{
 						window.location.href = "thread.php?cat='.$id.'&id=" + data;

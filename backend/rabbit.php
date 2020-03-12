@@ -199,7 +199,7 @@ function process($input){
 					return 0;
 				}else{
 					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-						$row['content'] = $row['content'];		
+						$row['content'] = stripcslashes($row['content']);
 						$data[] = $row;
 					}
 					return $data;
