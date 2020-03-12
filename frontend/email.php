@@ -8,7 +8,7 @@ foreach($users as $user){
 	$following = sendRabbit(array('type'=>'getSchedule','data'=> $user['username']));
 	$shows = "";
 	foreach($following as $show){
-		if(strtotime($show['airdate']) < strtotime(date('Y-m-d H:i', strtotime('+2 days')))){
+		if(strtotime($show['airdate']) < strtotime(date('Y-m-d H:i', strtotime('+2 days'))) && strtotime($show['airdate']) > strtotime(date('Y-m-d H:i'))){
 			$shows = $shows."<li>".$show['name']." Airing on ".date('l, F jS \a\t g:i A e',strtotime($show['airdate']))."</li>";
 		}
 	}

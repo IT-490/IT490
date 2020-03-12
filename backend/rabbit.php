@@ -180,12 +180,13 @@ function process($input){
 				if($response == 0){
 					return $id;
 				}else{
-					return 1;
+					error("ERROR: ".$sql." failed to execute");
+					return false;
 				}
 			}else{
 				//error happened here
 				error("ERROR: ".$sql." failed to execute");
-				return 1;
+				return false;
 			}
 		case "getPosts":
 			$sql = "SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = {$input['data']}";
@@ -198,7 +199,7 @@ function process($input){
 					return 0;
 				}else{
 					while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-						
+						$row['content'] = $row['content'];		
 						$data[] = $row;
 					}
 					return $data;

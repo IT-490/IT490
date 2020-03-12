@@ -36,7 +36,7 @@ if(isset($_REQUEST['ajax'])){
 		echo "</tr>";
 		echo "<tr>";
 		//need to fix line breaking here
-		echo "<td colspan='3' style='white-space: pre-wrap;'>".$row['content']."</td>";
+		echo "<td colspan='3' style='white-space: pre-wrap;'>".stripcslashes($row['content'])."</td>";
 		echo "</tr>";
 		echo "<table>";
 		echo "<br>";

@@ -93,9 +93,8 @@
             $.ajax({
                 url: 'logout.php', // The php script that clears the session
                 type: 'POST',
-                dataType: 'json'
             })
-                .done(function(data) {
+                .done(function() {
                     $("#welcome-message").text("");
                     $(".has-session").hide();
                     $(".no-session").show();
