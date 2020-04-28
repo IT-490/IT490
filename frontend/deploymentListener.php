@@ -12,7 +12,7 @@ function process($data){
 			passthru("tar -ac login.html login.php register.html register.php logout.php validate.php | gzip -f");
 			break;
 		case "forums":
-			passthru("cd ./forums; tar -ac header.php index.html newThread.php thread.php threads.php | gzip -f"); 
+			passthru("tar -ac ./forums/header.php ./forums/index.html ./forums/newThread.php ./forums/thread.php ./forums/threads.php | gzip -f"); 
 			break;
 		case "show":
 			passthru("tar -ac shows.php | gzip -f");
