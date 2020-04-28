@@ -1,1 +1,3 @@
-test
+testDB: ERROR: SELECT * FROM following WHERE showID =  and user = 'bross' failed to execute
+DB: ERROR: SELECT content, postDate, poster, postTopic FROM forum_posts WHERE postTopic = asd failed to execute
+DB: ERROR: SELECT * FROM shows WHERE showID = adsasd failed to execute
