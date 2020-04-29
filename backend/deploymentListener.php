@@ -4,6 +4,9 @@ require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 function process($data){
 	if(strpos($data,"mysql") == true){
+		$decoded = base64_decode(string $data [, bool $strict = FALSE ] ) : string;
+		shell_exec('mysql -u root -p it490db < $decoded.sql'};
+
 	}
 	if(strpos($data,"mysql") !== true){
 		$decoded = base64_decode ( string $data [, bool $strict = FALSE ] ) : string;
