@@ -3,22 +3,13 @@ require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 function process($data){
-	ob_start();
-	switch($data){
-		case "error":
-			passthru("tar -ac errorLog.php | gzip -f");
-			break;
-		case "rabbit":
-			passthru("tar -ac rabbit.php account.php | gzip -f");
-			break;
-		case "database":
-			passthru("mysqldump --no-data -u test -pdelta523 | gzip -f");
-			break;
+	if(strpos($data,"mysql") == true){
 	}
-	$file = ob_get_contents();
-	ob_end_clean();
-	$file = base64_encode($file);
-	return $file;
+	if(strpos($data,"mysql") !== true){
+		$decoded = base64_decode ( string $data [, bool $strict = FALSE ] ) : string;
+		file_put_contents( string deployment.zip, $decoded);
+		shell_exec('gzip -d tar-xf deployment.zip');
+	}
 }
 $server = new rabbitMQServer("rabbitMQ.ini", "backendDeployment");
 echo "server started up";
