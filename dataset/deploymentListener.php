@@ -3,22 +3,10 @@ require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 function process($data){
-	ob_start();
-	switch($data){
-		case "update":
-			passthru("tar -ac update.php | gzip -f");
-			break;
-		case "rabbit":
-			passthru("tar -ac rabbit.php | gzip -f");
-			break;
-		case "error":
-			passthru("tar -ac errorLog.php | gzip -f");
-			break;
-	}
-	$file = ob_get_contents();
-	ob_end_clean();
-	$file = base64_encode($file);
-	return $file;
+	$decode = base64_decode($data, FALSE);
+	file_put_contents("deployment.tar.gz", $decode);
+	exec('gzip -d deployment.tar,gz');
+	exec('tar -xf deployment.tar');
 }
 $server = new rabbitMQServer("rabbitMQ.ini", "datasetDeployment");
 echo "server started up";
