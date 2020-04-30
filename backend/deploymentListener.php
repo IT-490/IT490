@@ -6,7 +6,7 @@ function process($data){
 	if(strpos($data,"mysql") == true){
 		$decoded = base64_decode($data, FALSE );
 		file_put_contents("decoded.sql", $decoded);
-		exec('mysql -u root -p it490db < $decoded.sql'};
+		exec('mysql -u root -p it490db < $decoded.sql');
 
 	}
 	if(strpos($data,"mysql") !== true){
