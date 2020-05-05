@@ -1,18 +1,26 @@
 <?php
 
-require_once('functions.php');
+//require_once('functions.php');
 
 // The requested show id. Default is 1
 session_start();
 $id =$_REQUEST['id'];
 $response = sendRabbit(array('type'=> 'getShow', 'data'=> $id));
+
 if(isset($_SESSION['user'])){
+<<<<<<< Updated upstream
 	$user =$_SESSION['user'];
 	$liked = sendRabbit(array('type'=> 'isLiked', 'data'=> array('user'=> $user, 'showID'=> $id)));
 	$followed = sendRabbit(array('type'=> 'isFollowing', 'data'=> array('user'=> $user, 'showID'=> $id)));
+=======
+    $user =$_SESSION['user'];
+    $liked = sendRabbit(array('type'=> 'isLiked', 'data'=> array('user'=> $user, 'showID'=> $id)));
+    $followed = sendRabbit(array('type'=> 'isFollowing', 'data'=> array('user'=> $user, 'showID'=> $id)));
+>>>>>>> Stashed changes
 }
-		// If the request was sent via AJAX
+// If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {
+<<<<<<< Updated upstream
 	$id =$_REQUEST['id'];
 	session_start();
 	if(isset($_SESSION['user'])){
@@ -35,6 +43,30 @@ if(isset($_REQUEST['ajax'])) {
 			break;
 	}
 	exit();
+=======
+    $id =$_REQUEST['id'];
+    session_start();
+    if(isset($_SESSION['user'])){
+        $user =$_SESSION['user'];
+    }else{
+        return 1;
+    }
+    switch($_REQUEST['action']){
+        case "like_show":
+            echo sendRabbit(array('type'=> 'likeShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
+            break;
+        case "unlike_show":
+            echo sendRabbit(array('type'=> 'unlikeShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
+            break;
+        case "follow_show":
+            echo sendRabbit(array('type'=> 'followShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
+            break;
+        case "unfollow_show":
+            echo sendRabbit(array('type'=> 'unfollowShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
+            break;
+    }
+    exit();
+>>>>>>> Stashed changes
 }
 
 ?>
@@ -108,21 +140,25 @@ if(isset($_REQUEST['ajax'])) {
             </table>
 
             <div class="mt-4">
-		<?php
-		if(isset($_SESSION['user'])){
-			if($liked === true){
-				echo "<button class='btn btn-primary' onclick=unlikeShow()>Unlike</button> ";
-			}else if($liked === false){
-				echo "<button class='btn btn-primary' onclick=likeShow()>Like</button> ";
-			}
-			if($followed === true){
-				echo "<button class='btn btn-primary' onclick=unfollowShow()>Unfollow</button> ";
-			}else if($followed === false){
-				echo "<button class='btn btn-primary' onclick=followShow()>Follow</button> ";
-			}
-		}
-		?>
-		<a id="forums-button" href='<?php echo "forums/threads.php?id=".$id;?>'><button class="btn btn-primary">Forums</button></a>
+                <?php
+                if(isset($_SESSION['user'])){
+                    if($liked === true){
+                        echo "<button class='btn btn-primary' onclick=unlikeShow()>Unlike</button> ";
+                    }else if($liked === false){
+                        echo "<button class='btn btn-primary' onclick=likeShow()>Like</button> ";
+                    }
+
+                    if($followed === true){
+                        echo "<button class='btn btn-primary' onclick=unfollowShow()>Unfollow</button> ";
+                    }else if($followed === false){
+                        echo "<button class='btn btn-primary' onclick=followShow()>Follow</button> ";
+                    }
+
+                    echo "<a href='reviews.php?id=" . $id . "'><button class='btn btn-primary'>Review</button></a> ";
+                }
+                ?>
+
+                <a id="forums-button" href='<?php echo "forums/threads.php?id=".$id;?>'><button class="btn btn-primary">Forums</button></a>
             </div>
         </div>
     </div>
@@ -143,13 +179,13 @@ if(isset($_REQUEST['ajax'])) {
             .done(function(data) {
                 if(data.set) { // A Session exists. Switch to the signed-in version
                     $("#welcome-message").text("Welcome, " + data.username + "!");
-		    $("#welcome-message").attr("href", "./profile.php");
-		    $(".no-session").hide();
+                    $("#welcome-message").attr("href", "./profile.php");
+                    $(".no-session").hide();
                     $(".has-session").show();
                 } else { // No session. Switch to the signed-out version
                     $("#welcome-message").text("");
-		    $("#welcome-message").attr("href", "");
-		    $(".has-session").hide();
+                    $("#welcome-message").attr("href", "");
+                    $(".has-session").hide();
                     $(".no-session").show();
                 }
             })
@@ -164,7 +200,7 @@ if(isset($_REQUEST['ajax'])) {
             data: { "ajax": true, "action": "like_show", "id": <?php echo $id ?> },
             dataType: 'json'
         }).done(function(data) {
-		location.reload();
+            location.reload();
         });
     }
 
@@ -175,7 +211,7 @@ if(isset($_REQUEST['ajax'])) {
             data: { "ajax": true, "action": "unlike_show", "id": <?php echo $id ?> },
             dataType: 'json'
         }).done(function(data) {
-		location.reload();
+            location.reload();
         })
     }
 
@@ -186,7 +222,7 @@ if(isset($_REQUEST['ajax'])) {
             data: { "ajax": true, "action": "follow_show", "id": <?php echo $id ?> },
             dataType: 'json'
         }).done(function(data) {
-		location.reload();
+            location.reload();
         });
     }
 
@@ -197,7 +233,7 @@ if(isset($_REQUEST['ajax'])) {
             data: { "ajax": true, "action": "unfollow_show", "id": <?php echo $id ?> },
             dataType: 'json'
         }).done(function(data) {
-		location.reload();
+            location.reload();
         });
     }
 

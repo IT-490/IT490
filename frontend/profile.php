@@ -21,13 +21,14 @@ $requestor = $_SESSION['user'];
 $data = sendRabbit(array('type'=> 'getProfile', 'data'=> array('user'=> $user, 'requestor'=> $requestor)));
 echo "<div class='container mt-4 mb-4 '>";
 if($data == 2){
-	echo "<h4 style='text-align: center'>ERROR 404: USER NOT FOUND</h4>";
+	echo "<h4 style='text-align: center'>ERROR 404: USER NOT FOUND!</h4>";
 }else{
 	echo "
 		<h2 style='text-align: center'>{$user}</h2>
 		<hr>";
 		
 	if($user != $requestor && isset($_SESSION['user'])){
+		echo "<button class='btn btn-dark' onclick=\"window.location.href='./messages.php?user=$user'\">Message</button>";
 		if($data['isFriend'] == 0){
 			echo "<button class='btn btn-dark' onclick=respond('add')>Add Friend</button>";
 		}else if($data['isFriend'] == 1){
@@ -53,8 +54,14 @@ if($data == 2){
 		";
 	}else if($user == $requestor && isset($_SESSION['user'])){
 		echo "
+<<<<<<< Updated upstream
 		<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>
 		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>";
+=======
+		<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>;
+		<button class='btn btn-dark' onclick=\"window.location.href='./inbox.php'\">Inbox</button>";
+		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>;
+>>>>>>> Stashed changes
 	}
 	echo "		
 		<br><br>

@@ -591,7 +591,42 @@ function process($input){
 			}
 			var_dump($data);
 			return $data;
-	}
+        case "reviewShow":
+            $sql = "INSERT INTO show_reviews (show, user, review) values ('{$input['data']['showID']}', {$input['data']['user']}, '{$input['data']['review']}')";
+            if(mysqli_query($db,$sql)){
+                $id = mysqli_insert_id($db);
+                return $id;
+            }else{
+                //error check
+                error("ERROR: ".$sql." failed to execute");
+                return false;
+            }
+        case "newMessage":
+            $now = date('Y-m-d H:i:s');
+            $sql = "INSERT INTO messages (from, to, message, sent_at) values ('{$input['data']['from']}', {$input['data']['to']}, '{$input['data']['message']}', '$now')";
+            if(mysqli_query($db,$sql)){
+                $id = mysqli_insert_id($db);
+                return $id;
+            }else{
+                //error check
+                error("ERROR: ".$sql." failed to execute");
+                return false;
+            }
+        case "getMessages":
+            $sql = "SELECT * FROM messages WHERE `from` = '{$input['user']}' OR `to` = '{$input['user']}' ORDER BY sent_at DESC";
+            $data = array();
+            $data['rows'] = array();
+            if(!($result = mysqli_query($db,$sql))){
+                error("ERROR: ".$sql." failed to execute");
+                return 1;
+            }else{
+                while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+                    $data['rows'][] = $row;
+                }
+                return $data;
+            }
+
+    }
 }
 function error ($result){
 	//include('../frontend/functions.php');
@@ -599,6 +634,6 @@ function error ($result){
 }
 
 $server = new rabbitMQServer("rabbitMQ.ini", "database");
-echo "server started up";
+echo "Server started up!";
 $server->process_requests('process');
 ?>
