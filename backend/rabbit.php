@@ -623,10 +623,23 @@ function process($input){
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
                     $data['rows'][] = $row;
                 }
-                return $data;
+		return $data;
             }
-
-    }
+	  case "getReview":
+		  $sql = "SELECT * FROM reviews WHERE `from` = "{$input['showID']};
+		  $data = array();
+		  $data['rows']= array();
+		   if(!($result = mysqli_query($db,$sql))){
+		 	error("ERROR: "$sql."failed to execute");
+	     		return 1;
+		   }
+  		   else{
+			   while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				$data['rows'][] = $row;
+	     			}
+				return $data;
+		   }			
+	}
 }
 function error ($result){
 	//include('../frontend/functions.php');
