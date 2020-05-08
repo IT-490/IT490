@@ -8,7 +8,7 @@ if($argv[1] == "pull"){
 	$data = sendRabbit($argv[3], 'development', $argv[2], rabbitMQ.ini);
 	$sql ="insert into versions (system, version, contents) values ('{$argv[2]}', '$argv[3]}' '$data')";
 	mysqli_query($db,$sql);
-	sendRabbit($data, 'production', $argv[2], rabbitMQ.ini);
+	sendRabbit($data, 'production', $argv[3], rabbitMQ.ini);
 }
 elseif($argv[1] == "set"){
 	$sql ="select from versions where system = $argv[2] and version = $argv[3]";
