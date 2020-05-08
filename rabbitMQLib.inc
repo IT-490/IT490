@@ -12,7 +12,7 @@ class rabbitMQServer
 	private $VHOST;
 	private $exchange;
 	private $queue;
-	private $routing_key = '*';
+	private $routing_key;
 	private $exchange_type = "topic";
 	private $auto_delete = false;
 
@@ -21,6 +21,7 @@ class rabbitMQServer
 		$this->machine = getHostInfo(array($machine));
 		$this->BROKER_HOST   = $this->machine[$server]["BROKER_HOST"];
 		$this->BROKER_PORT   = $this->machine[$server]["BROKER_PORT"];
+		$this->routing_key = $this->machine[$server]["ROUTING_KEY"];
 		$this->USER     = $this->machine[$server]["USER"];
 		$this->PASSWORD = $this->machine[$server]["PASSWORD"];
 		$this->VHOST = $this->machine[$server]["VHOST"];
@@ -39,10 +40,10 @@ class rabbitMQServer
 	function process_message($msg)
 	{
 		// send the ack to clear the item from the queue
-		if ($msg->getRoutingKey() !== "*")
-    {
-      return;
-    }
+//		if ($msg->getRoutingKey() !== "*")
+//    {
+//      return;
+//    }
     $this->conn_queue->ack($msg->getDeliveryTag());
 		try
 		{
@@ -144,7 +145,7 @@ class rabbitMQClient
 	private $VHOST;
 	private $exchange;
 	private $queue;
-	private $routing_key = '*';
+	private $routing_key;
 	private $response_queue = array();
 	private $exchange_type = "topic";
 
@@ -153,6 +154,7 @@ class rabbitMQClient
 		$this->machine = getHostInfo(array($machine));
 		$this->BROKER_HOST   = $this->machine[$server]["BROKER_HOST"];
 		$this->BROKER_PORT   = $this->machine[$server]["BROKER_PORT"];
+		$this->routing_key = $this->machine[$server]["ROUTING_KEY"];
 		$this->USER     = $this->machine[$server]["USER"];
 		$this->PASSWORD = $this->machine[$server]["PASSWORD"];
 		$this->VHOST = $this->machine[$server]["VHOST"];
