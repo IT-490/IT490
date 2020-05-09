@@ -5,7 +5,7 @@ if(isset($_REQUEST['ajax'])){
 }else{
     session_start();
     $user = $_SESSION['user'];
-    $data = sendRabbit(array('type'=> 'getMessages', 'user'=> $user));
+    $data = sendRabbit(array('type'=> 'getInbox', 'data' => array('user'=> $user)));
     include('./forums/header.php');
     echo '<div class="container mt-4 mb-4 mw-100">';
     if($data == 2){
@@ -22,11 +22,11 @@ if(isset($_REQUEST['ajax'])){
 		</tr>
 		';
 
-        foreach($data['rows'] as $row){
+        foreach($data['users'] as $row){
             echo "<tr>";
-            echo "<td>" . $row['username'] . "</td>";
+            echo "<td>" . $row['user'] . "</td>";
             echo "<td>" . $row['message'] . "</td>";
-            echo "<td><a href='messages.php?user=". $row['username']. "'>Reply</a></td>";
+            echo "<td><a href='messages.php?user=". $row['user']. "'>Reply</a></td>";
             echo "</tr>";
         }
         echo '</table>';

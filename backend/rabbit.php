@@ -612,25 +612,39 @@ function process($input){
                 error("ERROR: ".$sql." failed to execute");
                 return false;
             }
-        case "getMessages":
-            $sql = "SELECT * FROM messages WHERE `from` = '{$input['user']}' OR `to` = '{$input['user']}' ORDER BY sent_at DESC";
+		case "getMessages":
+			$sql = "SELECT * FROM messages where from = '{$input['sender']}' and to = '{$input['user']}' ORDER BY sent_at DESC";
             $data = array();
-            $data['rows'] = array();
+            $data['messages'] = array();
             if(!($result = mysqli_query($db,$sql))){
                 error("ERROR: ".$sql." failed to execute");
                 return 1;
             }else{
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                    $data['rows'][] = $row;
+                    $data['messages'][] = $row;
                 }
-		return $data;
-            }
-	  case "getReview":
+			return $data;
+			}
+		case "getInbox":
+			$sql = "SELECT from, message FROM messages WHERE to = '{$input['user']}' ORDER BY sent_at DESC";
+			$users['users'] = array();
+			if(!($result = mysqli_query($db, $sql))){
+				error("Error: ".$sql." failed to execute");
+				return 1;
+			}else{
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+					if(!(in_array($row['from'], $users))){
+						$users['users'][] = array('user' => $row['from'], 'message' => $row['message']);
+					}
+				}
+			}
+			return $users;
+	  	case "getReview":
 		  $sql = "SELECT * FROM reviews WHERE `from` = "{$input['showID']};
 		  $data = array();
 		  $data['rows']= array();
 		   if(!($result = mysqli_query($db,$sql))){
-		 	error("ERROR: "$sql."failed to execute");
+		 	error("ERROR: ".$sql."failed to execute");
 	     		return 1;
 		   }
   		   else{

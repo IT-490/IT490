@@ -17,7 +17,24 @@ if(empty($_SESSION['user'])){
     }else{
         include('./forums/header.php');
         $friendUsername = $_REQUEST['user'];
-
+        $user = $_SESSION['user'];
+        $data = sendRabbit(array('type' => 'getMessages', 'data' => array('sender' => $friendUsername, 'user' => $user)));
+        echo '
+		<h4>Messages with '.$friendUsername'.</h4><br>
+		<table class="table">
+		<thead class="thead-dark">
+		<tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+		</tr>
+		';
+        foreach($data['messages'] as $row){
+            echo "<tr>";
+            echo "<td>" . $row['from'] . "</td>";
+            echo "<td>" . $row['message'] . "</td>";
+            echo "</tr>";
+        }
+        echo '</table>';
         echo '<div class="container mw-75 mt-4 mb-4">';
         echo '<form id="message-form">';
         echo '<label for="message">Message</label>';
