@@ -62,7 +62,26 @@ if(isset($_REQUEST['ajax'])) {
 
 </div>
 
+<?php
+$data = sendRabbit(array('type' => 'getReview', 'data' => $id));
+echo '
+<h4>Inbox</h4><br>
+<table class="table">
+<thead class="thead-dark">
+<tr>
+    <th scope="col">User</th>
+    <th scope="col">Review</th>
+</tr>
+';
 
+foreach($data['rows'] as $row){
+    echo "<tr>";
+    echo "<td>" . $row['username'] . "</td>";
+    echo "<td>" . $row['review'] . "</td>";
+    echo "</tr>";
+}
+echo '</table>';
+?>
 <script src="jquery.min.js"></script>
 <script>
     $(window).on('load', function() {
