@@ -54,14 +54,9 @@ if($data == 2){
 		";
 	}else if($user == $requestor && isset($_SESSION['user'])){
 		echo "
-<<<<<<< Updated upstream
-		<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>
-		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>";
-=======
 		<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>;
 		<button class='btn btn-dark' onclick=\"window.location.href='./inbox.php'\">Inbox</button>";
 		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>;
->>>>>>> Stashed changes
 	}
 	echo "		
 		<br><br>

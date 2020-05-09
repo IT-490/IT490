@@ -8,42 +8,12 @@ $id =$_REQUEST['id'];
 $response = sendRabbit(array('type'=> 'getShow', 'data'=> $id));
 
 if(isset($_SESSION['user'])){
-<<<<<<< Updated upstream
-	$user =$_SESSION['user'];
-	$liked = sendRabbit(array('type'=> 'isLiked', 'data'=> array('user'=> $user, 'showID'=> $id)));
-	$followed = sendRabbit(array('type'=> 'isFollowing', 'data'=> array('user'=> $user, 'showID'=> $id)));
-=======
     $user =$_SESSION['user'];
     $liked = sendRabbit(array('type'=> 'isLiked', 'data'=> array('user'=> $user, 'showID'=> $id)));
     $followed = sendRabbit(array('type'=> 'isFollowing', 'data'=> array('user'=> $user, 'showID'=> $id)));
->>>>>>> Stashed changes
 }
 // If the request was sent via AJAX
 if(isset($_REQUEST['ajax'])) {
-<<<<<<< Updated upstream
-	$id =$_REQUEST['id'];
-	session_start();
-	if(isset($_SESSION['user'])){
-		$user =$_SESSION['user'];
-	}else{
-		return 1;
-	}
-	switch($_REQUEST['action']){
-		case "like_show":
-			echo sendRabbit(array('type'=> 'likeShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
-			break;
-		case "unlike_show":
-			echo sendRabbit(array('type'=> 'unlikeShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
-			break;
-		case "follow_show":
-			echo sendRabbit(array('type'=> 'followShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
-			break;
-		case "unfollow_show":
-			echo sendRabbit(array('type'=> 'unfollowShow', 'data'=> array('user'=> $user, 'showID'=> $id)));
-			break;
-	}
-	exit();
-=======
     $id =$_REQUEST['id'];
     session_start();
     if(isset($_SESSION['user'])){
@@ -66,7 +36,6 @@ if(isset($_REQUEST['ajax'])) {
             break;
     }
     exit();
->>>>>>> Stashed changes
 }
 
 ?>
