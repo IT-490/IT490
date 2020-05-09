@@ -615,7 +615,6 @@ function process($input){
 		case "getMessages":
 			$sql = "SELECT * FROM messages where (sender = '{$input['sender']}' or sender = '{$input['user']}')  and (receiver = '{$input['sender']}' or receiver = '{$input['user']}') ORDER BY sent_at DESC";
             $data = array();
-            $data['messages'] = array();
             if(!($result = mysqli_query($db,$sql))){
                 error("ERROR: ".$sql." failed to execute");
                 return 1;
@@ -627,7 +626,7 @@ function process($input){
 			}
 		case "getInbox":
 			$sql = "SELECT from, message FROM messages WHERE reciever = '{$input['user']}' ORDER BY sent_at DESC";
-			$users['users'] = array();
+			$users = array();
 			if(!($result = mysqli_query($db, $sql))){
 				error("Error: ".$sql." failed to execute");
 				return 1;
