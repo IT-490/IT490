@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-//this is a good version
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
