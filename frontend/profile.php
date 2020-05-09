@@ -53,10 +53,9 @@ if($data == 2){
 		</script>
 		";
 	}else if($user == $requestor && isset($_SESSION['user'])){
-		echo "
-		<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>;
-		<button class='btn btn-dark' onclick=\"window.location.href='./inbox.php'\">Inbox</button>";
-		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>;
+		echo "<button class='btn btn-dark' onclick=\"window.location.href='./friends.php'\">Friends</button>
+		<button class='btn btn-dark' onclick=\"window.location.href='./inbox.php'\">Inbox</button>
+		<button class='btn btn-dark' onclick=\"window.location.href='./schedule.php'\">Schedule</button>";
 	}
 	echo "		
 		<br><br>

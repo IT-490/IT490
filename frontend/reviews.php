@@ -1,6 +1,6 @@
 <?php
 
-//require_once('functions.php');
+require_once('functions.php');
 
 // The requested show id. Default is 1
 session_start();
