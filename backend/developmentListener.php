@@ -4,6 +4,8 @@ require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 function process($data){
 	echo $data[0].PHP_EOL;
+	echo $data[0];
+
 	ob_start();
 	switch($data[0]){
 		case "error":
@@ -19,6 +21,7 @@ function process($data){
 	$file = ob_get_contents();
 	ob_end_clean();
 	$file = base64_encode($file);
+	file_put_contents("test.base", $file);
 	return $file;
 }
 $server = new rabbitMQServer("rabbitMQ.ini", "backendDevDeployment");
