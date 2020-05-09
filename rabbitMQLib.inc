@@ -21,8 +21,8 @@ class rabbitMQServer
 		$this->machine = getHostInfo(array($machine));
 		$this->BROKER_HOST   = $this->machine[$server]["BROKER_HOST"];
 		$this->BROKER_PORT   = $this->machine[$server]["BROKER_PORT"];
-		$this->routing_key = $this->machine[$server]["ROUTING_KEY"];
 		$this->USER     = $this->machine[$server]["USER"];
+		$this->routing_key = $this->machine[$server]["ROUTING_KEY"];
 		$this->PASSWORD = $this->machine[$server]["PASSWORD"];
 		$this->VHOST = $this->machine[$server]["VHOST"];
 		if (isset( $this->machine[$server]["EXCHANGE_TYPE"]))
@@ -40,10 +40,6 @@ class rabbitMQServer
 	function process_message($msg)
 	{
 		// send the ack to clear the item from the queue
-//		if ($msg->getRoutingKey() !== "*")
-//    {
-//      return;
-//    }
     $this->conn_queue->ack($msg->getDeliveryTag());
 		try
 		{

@@ -3,8 +3,9 @@ require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 function process($data){
+	echo $data[0].PHP_EOL;
 	ob_start();
-	switch($data){
+	switch($data[0]){
 		case "homepage":
 			passthru("tar -ac index.html | gzip -f");
 			break;
@@ -23,7 +24,7 @@ function process($data){
 		case "error":
 			passthru("tar -ac errorLog.php | gzip -f");
 			break;
-		case "rabbit":
+		case "frontRabbit":
 			passthru("tar -ac rabbitMQ.ini rabbitMQLib.inc path.inc get_host_info.inc local.ini | gzip -f");
 			break;
 		case "functions":
