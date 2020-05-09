@@ -613,7 +613,7 @@ function process($input){
                 return false;
             }
 		case "getMessages":
-			$sql = "SELECT * FROM messages where from = '{$input['sender']}' and to = '{$input['user']}' ORDER BY sent_at DESC";
+			$sql = "SELECT * FROM messages where (sender = '{$input['sender']}' or sender = '{$input['user']}')  and (receiver = '{$input['sender']}' or receiver = '{$input['user']}') ORDER BY sent_at DESC";
             $data = array();
             $data['messages'] = array();
             if(!($result = mysqli_query($db,$sql))){
@@ -626,7 +626,7 @@ function process($input){
 			return $data;
 			}
 		case "getInbox":
-			$sql = "SELECT from, message FROM messages WHERE to = '{$input['user']}' ORDER BY sent_at DESC";
+			$sql = "SELECT from, message FROM messages WHERE reciever = '{$input['user']}' ORDER BY sent_at DESC";
 			$users['users'] = array();
 			if(!($result = mysqli_query($db, $sql))){
 				error("Error: ".$sql." failed to execute");
@@ -634,7 +634,7 @@ function process($input){
 			}else{
 				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 					if(!(in_array($row['from'], $users))){
-						$users['users'][] = array('user' => $row['from'], 'message' => $row['message']);
+						$users['users'][] = array('user' => $row['receiver'], 'message' => $row['message']);
 					}
 				}
 			}
