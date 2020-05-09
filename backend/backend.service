@@ -1,0 +1,9 @@
+[Unit]
+Description= Runs backend php scripts on startup
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/bin/backend.sh
+
+[Install]
+WantedBy=multi-user.target
