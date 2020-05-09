@@ -22,7 +22,7 @@ function process($data){
 		return "done";
 	}
 }
-$server = new rabbitMQServer("rabbitMQ.ini", "backendDeployment");
+$server = new rabbitMQServer("rabbitMQ.ini", "backendProdDeployment");
 echo "server started up";
 $server->process_requests('process');
 ?>

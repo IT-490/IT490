@@ -21,7 +21,7 @@ function process($data){
 	$file = base64_encode($file);
 	return $file;
 }
-$server = new rabbitMQServer("rabbitMQ.ini", "backendDeployment");
+$server = new rabbitMQServer("rabbitMQ.ini", "backendDevDeployment");
 echo "server started up";
 $server->process_requests('process');
 ?>

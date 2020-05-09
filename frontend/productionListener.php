@@ -9,7 +9,7 @@ function process($data){
 	exec('gzip -d deployment.tar.gz');
 	exec('tar -xf deployment.tar');
 }
-$server = new rabbitMQServer("rabbitMQ.ini", "frontendDeployment");
+$server = new rabbitMQServer("rabbitMQ.ini", "frontendProdDeployment");
 echo "server started up";
 $server->process_requests('process');
 ?>
