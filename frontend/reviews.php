@@ -13,6 +13,7 @@ if(isset($_REQUEST['ajax'])) {
     if(isset($_SESSION['user'])){
         $user =$_SESSION['user'];
     }else{
+        
         return 1;
     }
 
@@ -52,20 +53,10 @@ if(isset($_REQUEST['ajax'])) {
 <div class="container mt-4 mb-4">
     <h2 class="text-center"><?php echo $response['show']['name']; ?></h2>
     <hr>
-    <form action="" id="review-form">
-        <div class="form-group">
-            <label for="review" class="control-label">Review:</label>
-            <textarea required maxlength="2000" name="review" id="review" rows="8" placeholder=" Type review here.. " class="form-control"></textarea>
-        </div>
-        <button type="submit" class='btn btn-primary'>Submit</button>
-    </form>
 
-</div>
-
-<?php
+    <?php
 $data = sendRabbit(array('type' => 'getReview', 'data' => $id));
 echo '
-<h4>Inbox</h4><br>
 <table class="table">
 <thead class="thead-dark">
 <tr>
@@ -82,6 +73,18 @@ foreach($data['rows'] as $row){
 }
 echo '</table>';
 ?>
+
+    <form action="" id="review-form">
+        <div class="form-group">
+            <label for="review" class="control-label">Review:</label>
+            <textarea required maxlength="2000" name="review" id="review" rows="8" placeholder=" Type review here.. " class="form-control"></textarea>
+        </div>
+        <button type="submit" class='btn btn-primary'>Submit</button>
+    </form>
+
+</div>
+
+
 <script src="jquery.min.js"></script>
 <script>
     $(window).on('load', function() {

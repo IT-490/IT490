@@ -20,14 +20,13 @@ if(empty($_SESSION['user'])){
         $user = $_SESSION['user'];
         $data = sendRabbit(array('type' => 'getMessages', 'data' => array('sender' => $friendUsername, 'user' => $user)));
         echo '
-		<h4>Messages with '.$friendUsername'.</h4><br>
+		<h4>Messages with '.$friendUsername.'</h4><br>
 		<table class="table">
 		<thead class="thead-dark">
 		<tr>
             <th scope="col"></th>
             <th scope="col"></th>
-		</tr>
-		';
+		</tr>';
         foreach($data['messages'] as $row){
             echo "<tr>";
             echo "<td>" . $row['from'] . "</td>";
