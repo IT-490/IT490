@@ -29,7 +29,7 @@ if(empty($_SESSION['user'])){
 		</tr>';
         foreach($data['messages'] as $row){
             echo "<tr>";
-            echo "<td>" . $row['from'] . "</td>";
+            echo "<td>" . $row['sender'] . "</td>";
             echo "<td>" . $row['message'] . "</td>";
             echo "</tr>";
         }

@@ -13,7 +13,7 @@ if(isset($_REQUEST['ajax'])) {
     if(isset($_SESSION['user'])){
         $user =$_SESSION['user'];
     }else{
-        
+   	alert('hello');     
         return 1;
     }
 
