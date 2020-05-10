@@ -592,8 +592,9 @@ function process($input){
 			var_dump($data);
 			return $data;
         case "reviewShow":
-            $sql = "INSERT INTO show_reviews (show, user, review) values ('{$input['data']['showID']}', {$input['data']['user']}, '{$input['data']['review']}')";
-            if(mysqli_query($db,$sql)){
+            $sql = "INSERT INTO reviews (showID, username, review) values ({$input['data']['showID']}, '{$input['data']['user']}', '{$input['data']['review']}')";
+	    echo $sql;
+	    if(mysqli_query($db,$sql)){
                 $id = mysqli_insert_id($db);
                 return $id;
             }else{
@@ -603,8 +604,9 @@ function process($input){
             }
         case "newMessage":
             $now = date('Y-m-d H:i:s');
-            $sql = "INSERT INTO messages (from, to, message, sent_at) values ('{$input['data']['from']}', {$input['data']['to']}, '{$input['data']['message']}', '$now')";
-            if(mysqli_query($db,$sql)){
+            $sql = "INSERT INTO messages (sender, receiver, message, sent_at) values ('{$input['data']['from']}', '{$input['data']['to']}', '{$input['data']['message']}', '$now')";
+	    echo $sql;
+	    if(mysqli_query($db,$sql)){
                 $id = mysqli_insert_id($db);
                 return $id;
             }else{
@@ -614,7 +616,8 @@ function process($input){
             }
 		case "getMessages":
 			$sql = "SELECT * FROM messages where (sender = '{$input['data']['sender']}' or sender = '{$input['data']['user']}')  and (receiver = '{$input['data']['sender']}' or receiver = '{$input['data']['user']}') ORDER BY sent_at DESC";
-            $data = array();
+			echo $sql;
+			$data = array();
             if(!($result = mysqli_query($db,$sql))){
                 error("ERROR: ".$sql." failed to execute");
                 return 1;
@@ -625,7 +628,8 @@ function process($input){
 			return $data;
 			}
 		case "getInbox":
-			$sql = "SELECT from, message FROM messages WHERE reciever = '{$input['data']['user']}' ORDER BY sent_at DESC";
+			$sql = "SELECT sender, message FROM messages WHERE receiver = '{$input['data']['user']}' ORDER BY sent_at DESC";
+			echo $sql;
 			$users = array();
 			if(!($result = mysqli_query($db, $sql))){
 				error("Error: ".$sql." failed to execute");
@@ -633,13 +637,14 @@ function process($input){
 			}else{
 				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 					if(!(in_array($row['from'], $users))){
-						$users['users'][] = array('user' => $row['receiver'], 'message' => $row['message']);
+						$users['users'][] = array('user' => $row['sender'], 'message' => $row['message']);
 					}
 				}
 			}
 			return $users;
 	  	case "getReview":
-		  $sql = "SELECT * FROM reviews WHERE showID = '{$input['data']}'";
+		  $sql = "SELECT * FROM reviews WHERE showID = {$input['data']}";
+		  echo $sql;
 		  $data = array();
 		  $data['rows']= array();
 		   if(!($result = mysqli_query($db,$sql))){
