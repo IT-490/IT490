@@ -13,7 +13,7 @@ function process($data){
 			passthru("tar -ac rabbit.php account.php | gzip -f");
 			break;
 		case "database":
-			passthru("mysqldump --no-data -u test -pdelta523 | gzip -f");
+			passthru("mysqldump it490db --no-data -u test -pdelta523 | gzip -f");
 			break;
 	}
 	$file = ob_get_contents();
