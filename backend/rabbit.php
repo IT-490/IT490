@@ -1,9 +1,9 @@
 #!/usr/bin/php
 <?php
-require_once('path.inc');
-require_once('get_host_info.inc');
-require_once('rabbitMQLib.inc');
-include('../frontend/functions.php');
+require_once('/home/ubuntu/git/IT490/path.inc');
+require_once('/home/ubuntu/git/IT490/get_host_info.inc');
+require_once('/home/ubuntu/git/IT490/rabbitMQLib.inc');
+include('/home/ubuntu/git/IT490/frontend/functions.php');
 function getShow($db, $showID){
 	$sql = "SELECT name FROM shows WHERE showID = {$showID}";
 	
